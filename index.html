@@ -1,0 +1,2824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flarex™ | Newgen Moderation Bot Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600;1,700&family=Great+Vibes&family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&family=JetBrains+Mono:wght@400;500;600&family=Pinyon+Script&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="assets/flarex_logo.png">
+  <style>
+    /* Critical Baseline & Fallback Styles - Guaranteed Dark Espresso Theme */
+    :root {
+      --bg-main: #1C120E;
+      --bg-sidebar: #261914;
+      --bg-card: #302019;
+      --bg-card-hover: #493024;
+      --accent-copper: #B88963;
+      --accent-copper-light: #D2AD8A;
+      --text-primary: #F3E6D8;
+      --text-secondary: #BDA797;
+      --text-muted: #8D7768;
+      --font-serif: 'Cinzel', 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', Consolas, monospace;
+    }
+    html, body {
+      background-color: #1C120E !important;
+      color: #F3E6D8 !important;
+      font-family: var(--font-sans) !important;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <nav class="top-navbar" aria-label="Main Navigation">
+    <!-- Mobile Hamburger Toggle Button -->
+    <button class="mobile-menu-toggle-btn" id="mobileMenuToggleBtn" type="button" aria-label="Toggle navigation sidebar">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
+
+    <!-- Brand Logo -->
+    <a href="#" class="brand-section" onclick="location.reload()" aria-label="Flarex Bot Dashboard Home">
+      <div class="brand-crown-icon">
+        <img src="assets/flarex_logo.png" class="discord-emoji large" alt="Flarex Logo">
+      </div>
+      <div class="brand-text-wrap">
+        <div class="brand-title">Flarex<span class="brand-tm">™</span></div>
+        <div class="brand-subtitle">NEWGEN MODERATION BOT</div>
+      </div>
+    </a>
+
+    <!-- Center Search Bar -->
+    <div class="search-container">
+      <button class="search-bar-btn trigger-search-modal" type="button" aria-label="Search commands, settings, or modules (Ctrl + K)">
+        <div class="search-left">
+          <span style="color: var(--accent-copper); font-size: 14px;">🔍</span>
+          <span>Search commands, settings or modules...</span>
+        </div>
+        <span class="search-shortcut-badge">Ctrl + K</span>
+      </button>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="nav-actions-right">
+      <!-- Live Sync Status Widget -->
+      <div class="live-sync-indicator" id="syncStatusWidget" title="Real-time Synchronization Status (Click to re-sync)" style="cursor: pointer;" aria-label="Synchronization Status" role="status">
+        <span id="syncStatusLabel">Synced</span>
+        <span class="sync-time-sub" id="syncLastTimeText" style="color: var(--text-secondary); font-size: 10.5px; font-weight: 500;">• Just now</span>
+        <button type="button" id="syncRetryBtn" class="sync-retry-btn" aria-label="Retry synchronization" style="display: none; background: #ef4444; color: #fff; border: none; border-radius: 10px; padding: 2px 8px; font-size: 10px; font-weight: 700; cursor: pointer; margin-left: 4px;">Retry</button>
+      </div>
+
+      <button type="button" class="icon-round-btn trigger-host-settings" title="Bot Hosting & API Bridge Settings" aria-label="Configure Bot Hosting and API bridge">
+        <span style="font-size: 14px; color: var(--accent-copper);">⚙️</span>
+      </button>
+
+      <!-- Server Selector / Picker Trigger -->
+      <button type="button" class="server-selector-btn trigger-server-picker" title="Switch Active Discord Server" aria-label="Select active Discord server">
+        <div class="server-avatar-mini" id="headerServerAvatar">
+          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100" alt="Server">
+        </div>
+        <span id="headerServerName" style="font-weight: 600;">✨ Flarex Official HQ</span>
+        <span style="color: var(--accent-copper); font-size: 10px;">▼</span>
+      </button>
+
+      <button type="button" class="icon-round-btn trigger-server-picker" title="Open Server Picker" aria-label="Open Discord Server Picker">
+        <img src="https://cdn.discordapp.com/emojis/1525317581282476102.webp" class="discord-emoji" alt="Servers">
+      </button>
+
+      <!-- Header Premium Quick Action CTA -->
+      <button type="button" class="btn btn-premium-claim" id="headerPremiumQuickBtn" title="Explore Flarex Premium &amp; 7-Day Free Trial" aria-label="Flarex Premium Upgrades" style="padding: 6px 14px; font-size: 12px; font-weight: 700; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+        <img src="assets/crown.png" class="discord-emoji small" style="width: 16px; height: 16px; vertical-align: middle;" alt="Crown">
+        <span id="headerPremiumBtnText">Free Trial</span>
+      </button>
+
+      <!-- User Profile & Auth Modal Trigger -->
+      <div class="user-profile-pill" id="userProfilePill" title="Discord Account & Server Sync" aria-label="User profile and authentication status" role="button" tabindex="0">
+        <div id="navUserLoggedOut" style="display: flex; align-items: center; gap: 8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.894a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          <span style="font-weight: 600; font-size: 12.5px; color: #fff;">Sign in with Discord</span>
+        </div>
+        <div id="navUserLoggedIn" style="display: none; align-items: center; gap: 8px;">
+          <img src="" alt="Avatar" class="user-avatar-img">
+          <div class="user-info-text">
+            <span class="user-name"></span>
+            <span class="user-role-tag" id="userServerCountBadge">0 Servers</span>
+          </div>
+          <span style="color: var(--accent-copper); font-size: 10px; margin-left: 4px;">▼</span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Sidebar Backdrop Overlay -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop" aria-label="Close navigation drawer"></div>
+
+  <!-- ================= APP CONTAINER ================= -->
+  <div class="app-container">
+
+    <!-- ================= LEFT SIDEBAR ================= -->
+    <aside class="sidebar-left" aria-label="Sidebar Navigation">
+      <div class="nav-menu-group" role="tablist">
+        <!-- 1. Dashboard -->
+        <button type="button" class="nav-item-btn active" data-tab="overview" role="tab" aria-label="Overview Dashboard">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          </span>
+          <span>Dashboard</span>
+        </button>
+
+        <!-- Premium Hub -->
+        <button type="button" class="nav-item-btn nav-premium-btn" data-tab="premium" role="tab" aria-label="Flarex Premium Hub">
+          <span class="nav-icon">
+            <img src="assets/crown.png" class="discord-emoji" style="width: 20px; height: 20px; object-fit: contain;" alt="Premium">
+          </span>
+          <span>Premium</span>
+          <span class="nav-badge-pill" style="background: rgba(184, 137, 99, 0.2); color: var(--accent-copper-light); border: 1px solid var(--accent-copper); margin-left: auto; font-size: 9px; padding: 2px 6px; font-weight: 800; letter-spacing: 0.5px;">PRO</span>
+        </button>
+
+        <!-- 2. Antinuke -->
+        <button type="button" class="nav-item-btn" data-tab="antinuke" role="tab" aria-label="Antinuke Security Engine">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+          </span>
+          <span>Antinuke</span>
+        </button>
+
+        <!-- 3. Raid Protection -->
+        <button type="button" class="nav-item-btn" data-tab="raid" role="tab" aria-label="Raid Protection and Anti-Raid">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
+          </span>
+          <span>Raid Protection</span>
+        </button>
+
+        <!-- 4. Automod -->
+        <button type="button" class="nav-item-btn" data-tab="automod" role="tab" aria-label="Automod Filter">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.38-1 1.72V7h4a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-8a3 3 0 0 1 3-3h4V5.72A2.001 2.001 0 0 1 10 4a2 2 0 0 1 2-2zm-4 9a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm8 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-5 5h6v1.5H11V16z"/></svg>
+          </span>
+          <span>Automod</span>
+        </button>
+
+        <!-- 5. Warn Config -->
+        <button type="button" class="nav-item-btn" data-tab="warn_config" role="tab" aria-label="Warn Configuration and Escalation">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>
+          </span>
+          <span>Warn Config</span>
+        </button>
+
+        <!-- 6. Jail System -->
+        <button type="button" class="nav-item-btn" data-tab="jail" role="tab" aria-label="Jail and Isolation System">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 3h2v18H4V3zm5 0h2v18H9V3zm5 0h2v18h-2V3zm5 0h2v18h-2V3zM2 5h20v2H2V5zm0 12h20v2H2v-2z"/></svg>
+          </span>
+          <span>Jail System</span>
+        </button>
+
+        <!-- 7. Verification -->
+        <button type="button" class="nav-item-btn" data-tab="verification" role="tab" aria-label="Member Verification Gate">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          </span>
+          <span>Verification</span>
+        </button>
+
+        <!-- 8. Reaction Roles -->
+        <button type="button" class="nav-item-btn" data-tab="reaction_roles" role="tab" aria-label="Reaction and Button Roles">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/></svg>
+          </span>
+          <span>Reaction Roles</span>
+        </button>
+
+        <!-- 9. Starboard -->
+        <button type="button" class="nav-item-btn" data-tab="starboard" role="tab" aria-label="Starboard Showcase">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </span>
+          <span>Starboard</span>
+        </button>
+
+        <!-- 10. Welcomer -->
+        <button type="button" class="nav-item-btn" data-tab="welcomer" role="tab" aria-label="Welcomer and Arrival Embeds">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v3.5l-1-.5a2 2 0 0 0-2 0 2 2 0 0 0-1 1.73V13h-1.5a2 2 0 0 0-2 2v1.5A7.5 7.5 0 0 0 20 24h.5a3.5 3.5 0 0 0 3.5-3.5V12.5a2 2 0 0 0-2-2zM5.5 10a1 1 0 0 0-1-1H2a1 1 0 0 0 0 2h2.5a1 1 0 0 0 1-1zm-.7-4.7a1 1 0 0 0-1.4 0l-1.8 1.8a1 1 0 0 0 1.4 1.4l1.8-1.8a1 1 0 0 0 0-1.4zm0 10.8a1 1 0 0 0 0 1.4l1.8 1.8a1 1 0 0 0 1.4-1.4l-1.8-1.8a1 1 0 0 0-1.4 0z"/></svg>
+          </span>
+          <span>Welcomer</span>
+        </button>
+
+        <!-- 11. Leveling -->
+        <button type="button" class="nav-item-btn" data-tab="leveling" role="tab" aria-label="Leveling and XP Rewards">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.5 18.5l6-6 4 4L22 6.92 20.59 5.5l-7.09 7.08-4-4L2 16.08zM2 20h20v2H2z"/></svg>
+          </span>
+          <span>Leveling</span>
+        </button>
+
+        <!-- 12. Music -->
+        <button type="button" class="nav-item-btn" data-tab="music" role="tab" aria-label="Music and Voice 24/7">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+          </span>
+          <span>Music</span>
+        </button>
+
+        <!-- 13. Economy -->
+        <button type="button" class="nav-item-btn" data-tab="economy" role="tab" aria-label="Economy and Mini-games">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 4V2H9v2C5.5 4 3 6.5 3 10c0 4 3 8 9 12 6-4 9-8 9-12 0-3.5-2.5-6-6-6zm-3 13c-2.2 0-4-1.8-4-4s1.8-4 4-4 4 1.8 4 4-1.8 4-4 4zm1-6.5V9h-2v1.5c-1 .3-1.5 1-1.5 1.8 0 1.2 1 1.7 2.2 2 .9.2 1.3.5 1.3 1 0 .6-.5 1-1.5 1-1 0-1.5-.5-1.7-1H8.5c.2 1.2 1.1 1.9 2.5 2.1V18h2v-1.4c1.1-.3 1.8-1.1 1.8-2 0-1.3-1-1.8-2.3-2.1-.9-.2-1.2-.5-1.2-.9 0-.5.4-.9 1.2-.9 1 0 1.3.4 1.5.8h1.5c-.2-1-.9-1.7-2-2z"/></svg>
+          </span>
+          <span>Economy</span>
+        </button>
+
+        <!-- 14. Tickets -->
+        <button type="button" class="nav-item-btn" data-tab="tickets" role="tab" aria-label="Tickets and Support Panels">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 10V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v4a2 2 0 0 1 0 4v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 1 0-4zm-2 2.54a4 4 0 0 0 0-5.08V6H4v1.46a4 4 0 0 0 0 5.08V18h16v-5.46zM15 13H9v-2h6v2z"/></svg>
+          </span>
+          <span>Tickets</span>
+        </button>
+
+        <!-- 15. Giveaways -->
+        <button type="button" class="nav-item-btn" data-tab="giveaways" role="tab" aria-label="Giveaways Hub">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 19.5l3.5 3.5L20 8.5 16.5 5 2 19.5zm19.8-14.8l-1.4-1.4c-.4-.4-1-.4-1.4 0L17.5 4.8l2.8 2.8 1.5-1.5c.4-.4.4-1 0-1.4zM13 1.5l-1.5 1.5 1.4 1.4 1.5-1.5-1.4-1.4zM22.5 11l-1.5-1.5-1.4 1.4 1.5 1.5 1.4-1.4zM19 15l-1.5-1.5-1.4 1.4 1.5 1.5 1.4-1.4z"/></svg>
+          </span>
+          <span>Giveaways</span>
+        </button>
+
+        <!-- 16. Audit Logs -->
+        <button type="button" class="nav-item-btn" data-tab="logs" role="tab" aria-label="Server Audit Logs">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 16H5V5h2v3h10V5h2v14zm-12-6h10v2H7v-2zm0-4h10v2H7V9zm0 8h7v2H7v-2z"/></svg>
+          </span>
+          <span>Audit Logs</span>
+        </button>
+
+        <!-- 17. Command Access -->
+        <button type="button" class="nav-item-btn" data-tab="command_access" role="tab" aria-label="Command Permissions and Restrictions">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          </span>
+          <span>Command Access</span>
+        </button>
+
+        <!-- 18. Cases & Modlogs -->
+        <button type="button" class="nav-item-btn" data-tab="cases" role="tab" aria-label="Moderation Cases and Log Channel">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+          </span>
+          <span>Mod Cases</span>
+        </button>
+
+        <!-- 19. Staff Hierarchy -->
+        <button type="button" class="nav-item-btn" data-tab="staff" role="tab" aria-label="Staff Roles and Hierarchy">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          </span>
+          <span>Staff Hierarchy</span>
+        </button>
+
+        <!-- 20. Settings -->
+        <button type="button" class="nav-item-btn" data-tab="settings" role="tab" aria-label="General Bot Settings">
+          <span class="nav-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+          </span>
+          <span>Settings</span>
+        </button>
+      </div>
+
+      <!-- Sidebar Left Footer -->
+      <div class="sidebar-footer-decor">
+        <div class="sidebar-butterfly">🦋</div>
+        <div class="sidebar-quote">
+          Better Servers
+          <strong>Stronger Communities</strong>
+        </div>
+        <div class="sidebar-lantern-wrap">
+          <div style="position: absolute; color: var(--accent-copper-light); font-size: 32px; filter: drop-shadow(0 0 16px var(--accent-copper));">🏮</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ================= MAIN CONTENT AREA ================= -->
+    <main class="main-content">
+
+      <!-- HERO BANNER -->
+      <div class="hero-banner-card">
+        <div class="hero-banner-bg"></div>
+        <div class="hero-banner-overlay">
+          <div class="hero-brand-lockup">
+            <div class="hero-brand-logo-wrap">
+              <img src="assets/flarex_logo.png" class="hero-brand-logo" alt="Flarex Logo">
+            </div>
+            <div class="hero-brand-text-block">
+              <span class="hero-brand-name">Flarex</span><span class="hero-brand-tm">™</span>
+            </div>
+          </div>
+          <div class="hero-subtitle-bar">
+            <div class="hero-subtitle-line"></div>
+            <div class="hero-subtitle-text">NEWGEN MODERATION BOT</div>
+            <div class="hero-subtitle-line right"></div>
+          </div>
+          <div class="hero-slogan-pills">
+            <span>FAST</span>
+            <span class="star">✦</span>
+            <span>RELIABLE</span>
+            <span class="star">✦</span>
+            <span>SECURE</span>
+            <span class="star">✦</span>
+            <span>ALWAYS WITH YOU</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 1: OVERVIEW ================= -->
+      <div class="tab-content-panel active" id="tab-overview">
+        <!-- 4 Top Metrics (Live Synchronized with Real Bot & Active Server) -->
+        <div class="metrics-row">
+          <div class="metric-card">
+            <div class="metric-top">
+              <div class="metric-label">Total<br>Servers</div>
+            </div>
+            <div class="metric-value" id="metricTotalServers">--</div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+              <span id="metricTotalServersSub" style="color: var(--text-secondary); font-size: 11.5px;">Connected Bot Guilds</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-top">
+              <div class="metric-label">Server<br>Members</div>
+            </div>
+            <div class="metric-value" id="metricServerMembers">--</div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+              <span id="metricServerMembersSub" style="color: var(--text-secondary); font-size: 11.5px;">Selected Server</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-top">
+              <div class="metric-label">Server<br>Messages</div>
+            </div>
+            <div class="metric-value" id="metricServerMessages">--</div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+              <span id="metricServerMessagesSub" style="color: var(--text-secondary); font-size: 11.5px;">Tracked Activity</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-top">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <svg style="width: 18px; height: 18px; color: var(--accent-copper);" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
+                <div class="metric-label">Bot Uptime</div>
+              </div>
+            </div>
+            <div class="metric-value" id="metricUptime">--</div>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+              <span id="metricBotStatusText" style="color: var(--status-online); font-weight: 600; font-size: 11.5px;">Online</span>
+              <span style="color: var(--text-muted); font-size: 13px;" title="Real-time live status">✦</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Server Premium & Free Trial Banner Card -->
+        <div class="overview-premium-banner-card" id="overviewPremiumBannerCard" style="background: linear-gradient(135deg, rgba(184, 137, 99, 0.12), rgba(59, 40, 31, 0.45)); border: 1px solid var(--accent-border); border-radius: 14px; padding: 18px 22px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="font-size: 32px; filter: drop-shadow(0 0 12px rgba(184, 137, 99, 0.4)); display: flex; align-items: center;"><img src="assets/crown.png" style="width: 36px; height: 36px; object-fit: contain;" alt="Crown"></div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 15px; font-weight: 700; color: var(--text-primary);" id="overviewPremiumGuildTitle">Flarex Premium Engine</span>
+                <span class="nav-badge-pill" id="overviewPremiumBadge" style="background: rgba(184, 137, 99, 0.2); color: var(--accent-copper-light); font-weight: 800; border: 1px solid var(--accent-border);">7-DAY FREE TRIAL</span>
+              </div>
+              <div style="font-size: 12px; color: var(--text-secondary); margin-top: 3px;" id="overviewPremiumDesc">
+                Unlock 24/7 Music Uptime, +5 Limits Boost, 1.25x XP Multiplier &amp; No-Prefix Mode with 1-click.
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-premium-claim trigger-gold-trial-btn" id="overviewClaimTrialBtn" style="padding: 8px 18px; font-size: 12.5px; font-weight: 700;">
+              ⚡ Start 7-Day Free Trial
+            </button>
+            <a href="https://discord.gg/raunaq" target="_blank" rel="noopener noreferrer" class="btn btn-premium-buy" style="padding: 8px 16px; font-size: 12.5px; font-weight: 700;">
+              <span>Buy Premium</span>
+            </a>
+            <button type="button" class="btn btn-ghost" id="overviewViewPlansBtn" style="padding: 8px 12px; font-size: 12px; color: var(--accent-copper-light);" data-goto="premium">
+              View Plans ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Actions Grid -->
+        <div class="section-header-row">
+          <div>
+            <div class="section-title">
+              <span class="title-star">✦</span> Quick Actions
+            </div>
+            <div class="section-subtitle">Manage your bot and server with ease.</div>
+          </div>
+        </div>
+
+        <div class="quick-actions-grid">
+          <div class="quick-action-card" data-goto="settings">
+            <div class="quick-action-left">
+              <div class="quick-action-icon"><img src="https://cdn.discordapp.com/emojis/1525317551872016525.webp" class="discord-emoji" alt="Settings"></div>
+              <div class="quick-action-title">Server Settings</div>
+            </div>
+            <span class="quick-action-arrow">❯</span>
+          </div>
+
+          <div class="quick-action-card" data-goto="command_access">
+            <div class="quick-action-left">
+              <div class="quick-action-icon"><img src="https://cdn.discordapp.com/emojis/1525317551872016525.webp" class="discord-emoji" alt="Commands"></div>
+              <div class="quick-action-title">Manage Commands</div>
+            </div>
+            <span class="quick-action-arrow">❯</span>
+          </div>
+
+          <div class="quick-action-card" data-goto="logs">
+            <div class="quick-action-left">
+              <div class="quick-action-icon"><img src="https://cdn.discordapp.com/emojis/1525317246543597648.webp" class="discord-emoji" alt="Logs"></div>
+              <div class="quick-action-title">View Logs</div>
+            </div>
+            <span class="quick-action-arrow">❯</span>
+          </div>
+
+          <div class="quick-action-card" data-goto="logs">
+            <div class="quick-action-left">
+              <div class="quick-action-icon"><img src="https://cdn.discordapp.com/emojis/1525317636802609173.webp" class="discord-emoji" alt="Webhooks"></div>
+              <div class="quick-action-title">Webhooks</div>
+            </div>
+            <span class="quick-action-arrow">❯</span>
+          </div>
+
+          <div class="quick-action-card" data-goto="staff">
+            <div class="quick-action-left">
+              <div class="quick-action-icon"><img src="https://cdn.discordapp.com/emojis/1525317596105150474.webp" class="discord-emoji" alt="Staff"></div>
+              <div class="quick-action-title">Staff Panel</div>
+            </div>
+            <span class="quick-action-arrow">❯</span>
+          </div>
+
+          <div class="quick-action-card" data-goto="tickets">
+            <div class="quick-action-left">
+              <div class="quick-action-icon"><img src="https://cdn.discordapp.com/emojis/1525317581282476102.webp" class="discord-emoji" alt="Support"></div>
+              <div class="quick-action-title">Support</div>
+            </div>
+            <span class="quick-action-arrow">❯</span>
+          </div>
+        </div>
+
+        <!-- Recent Activity Feed -->
+        <div class="activity-card">
+          <div class="activity-header">
+            <div class="section-title">
+              <span class="title-star"><img src="https://cdn.discordapp.com/emojis/1525317246543597648.webp" class="discord-emoji" alt="Activity"></span> Recent Activity
+            </div>
+            <a href="#" class="activity-view-all-link" data-goto="logs">View all ➔</a>
+          </div>
+          <div class="activity-list" id="activityFeedList">
+            <!-- Dynamically populated from live server events -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 2: ANTINUKE ================= -->
+      <div class="tab-content-panel" id="tab-antinuke">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317317213290496.webp" class="discord-emoji large" alt="Antinuke"></div>
+            <div>
+              <div class="module-header-title">Antinuke & Panic Defense Engine</div>
+              <div class="module-header-desc">Military-grade protection against rogue administrators, unauthorized bot additions, webhook attacks, and rapid channel/role deletions.</div>
+            </div>
+          </div>
+          <div class="master-switch-wrap">
+            <span class="master-switch-label" id="antinukeStatusLabel" style="color: var(--status-online);"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji small"> Active</span>
+            <label class="switch">
+              <input type="checkbox" checked data-model="antinuke.enabled" data-status-label="antinukeStatusLabel">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <!-- Emergency Panic Room Card -->
+          <div class="config-card" style="border-color: rgba(239, 68, 68, 0.3);">
+            <div class="config-card-header">
+              <div class="config-card-title">
+                <span class="icon" style="color: #ef4444;"><img src="https://cdn.discordapp.com/emojis/1525317421534023791.webp" class="discord-emoji" alt="Alert"></span> Emergency Lockdown
+              </div>
+              <span class="metric-change-badge" style="background: rgba(239,68,68,0.15); color: #f87171;">Panic Ready</span>
+            </div>
+            <div class="config-card-desc">Instantly freeze all channels, revoke invite privileges, lock roles, and restrict execution exclusively to the Server Owner.</div>
+            <button type="button" class="btn btn-danger" id="triggerPanicBtn" style="width: 100%; padding: 12px;">
+              <img src="https://cdn.discordapp.com/emojis/1525317495278276758.webp" class="discord-emoji" alt="Ban"> TRIGGER EMERGENCY LOCKDOWN
+            </button>
+          </div>
+
+          <!-- Breach Punishment Policy -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title">
+                <span class="icon"><img src="https://cdn.discordapp.com/emojis/1525317495278276758.webp" class="discord-emoji" alt="Ban"></span> Action on Security Breach
+              </div>
+            </div>
+            <div class="config-card-desc">Select the automated punitive action executed against unauthorized administrators violating rate limits.</div>
+            <div class="form-group">
+              <label class="form-label">Default Punishment</label>
+              <select class="form-select" id="antinukePunishmentSelect" data-model="antinuke.punishment">
+                <option value="ban">Ban Offender & Strip Roles (Recommended)</option>
+                <option value="kick">Kick Offender & Log Event</option>
+                <option value="strip">Strip All Administrative Roles</option>
+                <option value="quarantine">Quarantine in Isolation Role</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quota & Threshold Limit Sliders -->
+        <div class="config-card" style="margin-bottom: 24px;">
+          <div class="config-card-header">
+            <div class="config-card-title">
+              <span class="icon"><img src="https://cdn.discordapp.com/emojis/1525317551872016525.webp" class="discord-emoji" alt="Settings"></span> Granular Event Limits & Quotas
+            </div>
+          </div>
+          <div class="config-grid-2col">
+            <div class="form-group">
+              <div class="form-label"><img src="https://cdn.discordapp.com/emojis/1525317323777507410.webp" class="discord-emoji small"> Channel Delete Limit (in 10s)</div>
+              <div class="range-slider-wrap">
+                <input type="range" min="1" max="10" value="2" class="range-slider" data-model="antinuke.channel_del_limit" data-badge="badgeChannelDel" data-unit=" / 10s">
+                <span class="range-val-badge" id="badgeChannelDel">2 / 10s</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-label"><img src="https://cdn.discordapp.com/emojis/1525317276105048155.webp" class="discord-emoji small"> Role Delete Limit (in 10s)</div>
+              <div class="range-slider-wrap">
+                <input type="range" min="1" max="10" value="2" class="range-slider" data-model="antinuke.role_del_limit" data-badge="badgeRoleDel" data-unit=" / 10s">
+                <span class="range-val-badge" id="badgeRoleDel">2 / 10s</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-label"><img src="https://cdn.discordapp.com/emojis/1525317495278276758.webp" class="discord-emoji small"> Mass Ban Limit (in 10s)</div>
+              <div class="range-slider-wrap">
+                <input type="range" min="1" max="15" value="3" class="range-slider" data-model="antinuke.mass_ban_limit" data-badge="badgeMassBan" data-unit=" bans">
+                <span class="range-val-badge" id="badgeMassBan">3 bans</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="form-label"><img src="https://cdn.discordapp.com/emojis/1525317491809583156.webp" class="discord-emoji small"> Mass Kick Limit (in 10s)</div>
+              <div class="range-slider-wrap">
+                <input type="range" min="1" max="15" value="3" class="range-slider" data-model="antinuke.mass_kick_limit" data-badge="badgeMassKick" data-unit=" kicks">
+                <span class="range-val-badge" id="badgeMassKick">3 kicks</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Whitelisted Admins Table -->
+        <div class="config-card">
+          <div class="config-card-header">
+            <div class="config-card-title">
+              <span class="icon"><img src="assets/crown.png" class="discord-emoji" alt="Owner"></span> Whitelisted Administrators &amp; Bots
+            </div>
+            <button type="button" class="btn btn-primary btn-sm" id="addNewWhitelistBtn">+ Add Whitelist</button>
+          </div>
+          <div class="custom-table-wrap" id="whitelistTableWrap">
+            <table class="custom-table">
+              <thead>
+                <tr>
+                  <th>User / Role</th>
+                  <th>ID</th>
+                  <th>Designation</th>
+                  <th>Bypass Scope</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="whitelistTableBody">
+                <!-- Dynamically rendered via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB: RAID PROTECTION ================= -->
+      <div class="tab-content-panel" id="tab-raid" role="tabpanel" aria-label="Raid Protection Module">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317421534023791.webp" class="discord-emoji large" alt="Raid Protection"></div>
+            <div>
+              <div class="module-header-title">Raid & Anti-Raid Defense Engine</div>
+              <div class="module-header-desc">Real-time mass-join mitigation, heuristic risk scoring, underage account screening, and automated panic lockdown.</div>
+            </div>
+          </div>
+          <div class="master-switch-wrap">
+            <span class="master-switch-label" id="raidStatusLabel" style="color: var(--status-online);"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji small" alt="Status"> Active</span>
+            <label class="switch">
+              <input type="checkbox" checked data-model="raid.enabled" data-status-label="raidStatusLabel" aria-label="Enable Raid Protection">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <!-- Card 1: Mass Join Rate Limiting -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317296598548623.webp" class="discord-emoji" alt="Joins"> Mass Join Thresholds</div>
+            </div>
+            <div class="config-card-desc">Detect and suppress sudden waves of bot joins before they can spam or compromise channels.</div>
+            
+            <div class="form-group">
+              <label class="form-label" for="raidJoinThresholdInput">Join Threshold (Members)</label>
+              <div class="range-slider-wrap">
+                <input type="range" id="raidJoinThresholdInput" min="2" max="30" value="5" class="range-slider" data-model="raid.join_threshold" data-badge="badgeRaidJoinThreshold" data-unit=" members" aria-label="Join Threshold Members">
+                <span class="range-val-badge" id="badgeRaidJoinThreshold">5 members</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="raidJoinIntervalInput">Interval Window (Seconds)</label>
+              <div class="range-slider-wrap">
+                <input type="range" id="raidJoinIntervalInput" min="3" max="60" value="10" class="range-slider" data-model="raid.join_interval_seconds" data-badge="badgeRaidJoinInterval" data-unit="s" aria-label="Interval Window Seconds">
+                <span class="range-val-badge" id="badgeRaidJoinInterval">10s</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="raidMinAgeInput">Minimum Account Age (Hours)</label>
+              <input type="number" id="raidMinAgeInput" class="form-input" data-model="raid.min_account_age_hours" min="0" max="720" value="24" placeholder="e.g. 24" aria-label="Minimum Account Age in Hours">
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">New accounts created under this threshold will be acted upon immediately.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="raidNewAccountActionSelect">Action on Underage / Suspect Accounts</label>
+              <select id="raidNewAccountActionSelect" class="form-select" data-model="raid.new_account_action" aria-label="Action on Underage Accounts">
+                <option value="kick">Kick from Server</option>
+                <option value="ban">Ban User</option>
+                <option value="isolate">Isolate in Quarantine Role</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Card 2: Automatic Lockdown & Alerts -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317421534023791.webp" class="discord-emoji" alt="Lockdown"> Lockdown & Security Response</div>
+            </div>
+            <div class="config-card-desc">Configure automated containment steps executed when a raid wave is detected.</div>
+
+            <div class="form-group">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 13px; font-weight: 600; color: #fff;">Auto Server Lockdown</div>
+                  <div style="font-size: 11.5px; color: var(--text-muted);">Automatically lock public text channels upon trigger.</div>
+                </div>
+                <label class="switch"><input type="checkbox" checked data-model="raid.auto_lockdown" aria-label="Toggle Auto Lockdown"><span class="slider"></span></label>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 14px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 13px; font-weight: 600; color: #fff;">Raise Guild Verification Level</div>
+                  <div style="font-size: 11.5px; color: var(--text-muted);">Temporarily elevate Discord verification requirements.</div>
+                </div>
+                <label class="switch"><input type="checkbox" checked data-model="raid.raise_verification_level" aria-label="Toggle Raise Verification Level"><span class="slider"></span></label>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 14px;">
+              <label class="form-label" for="raidAlertRoleSelect">Alert Ping Role</label>
+              <select id="raidAlertRoleSelect" class="form-select" data-model="raid.alert_role_id" data-role-picker="true" aria-label="Select Alert Role to Ping">
+                <option value="">-- None / No Ping --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="raidLogChannelSelect">Raid Incident Log Channel</label>
+              <select id="raidLogChannelSelect" class="form-select" data-model="raid.log_channel_id" data-channel-picker="text" aria-label="Select Raid Log Channel">
+                <option value="">-- Default Security Channel --</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Advanced Heuristics & Pattern Detection -->
+        <div class="config-card" style="margin-top: 20px;">
+          <div class="config-card-header">
+            <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317317213290496.webp" class="discord-emoji" alt="Heuristics"> Pattern Detection & Heuristics</div>
+          </div>
+          <div class="config-grid-2col">
+            <div>
+              <div class="form-group">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div>
+                    <div style="font-size: 13px; font-weight: 600; color: #fff;">Pattern & Name Similarity Matching</div>
+                    <div style="font-size: 11.5px; color: var(--text-muted);">Detect clusters of similar usernames or default avatar waves.</div>
+                  </div>
+                  <label class="switch"><input type="checkbox" checked data-model="raid.pattern_detection_enabled" aria-label="Toggle Pattern Detection"><span class="slider"></span></label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="raidPatternClusterInput">Pattern Cluster Threshold</label>
+                <input type="number" id="raidPatternClusterInput" class="form-input" data-model="raid.pattern_cluster_threshold" min="2" max="25" value="3" aria-label="Pattern Cluster Threshold">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="raidPatternWindowInput">Cluster Window (Seconds)</label>
+                <input type="number" id="raidPatternWindowInput" class="form-input" data-model="raid.pattern_cluster_window_seconds" min="5" max="300" value="30" aria-label="Pattern Cluster Window Seconds">
+              </div>
+            </div>
+
+            <div>
+              <div class="form-group">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                  <div>
+                    <div style="font-size: 13px; font-weight: 600; color: #fff;">Heuristic Risk Scoring</div>
+                    <div style="font-size: 11.5px; color: var(--text-muted);">Calculates risk score based on account age, badges, and flags.</div>
+                  </div>
+                  <label class="switch"><input type="checkbox" checked data-model="raid.heuristic_detection_enabled" aria-label="Toggle Heuristic Detection"><span class="slider"></span></label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="raidHeuristicScoreInput">Suspicion Score Trigger (10 - 100)</label>
+                <div class="range-slider-wrap">
+                  <input type="range" id="raidHeuristicScoreInput" min="20" max="100" value="75" class="range-slider" data-model="raid.heuristic_score_threshold" data-badge="badgeRaidHeuristic" data-unit=" pts" aria-label="Heuristic Score Threshold">
+                  <span class="range-val-badge" id="badgeRaidHeuristic">75 pts</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 3: AUTOMOD ================= -->
+      <div class="tab-content-panel" id="tab-automod">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525316796289388765.webp" class="discord-emoji large" alt="Automod"></div>
+            <div>
+              <div class="module-header-title">Automod & Shield System</div>
+              <div class="module-header-desc">Real-time content inspection, anti-spam, malicious invite link deletion, and automated punishment escalation.</div>
+            </div>
+          </div>
+          <div class="master-switch-wrap">
+            <span class="master-switch-label" id="automodStatusLabel" style="color: var(--status-online);"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji small"> Active</span>
+            <label class="switch">
+              <input type="checkbox" checked data-model="automod.enabled" data-status-label="automodStatusLabel">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="config-grid-3col">
+          <!-- Anti-Spam Card -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317709481512980.webp" class="discord-emoji" alt="Spam"> Anti-Spam</div>
+              <label class="switch"><input type="checkbox" checked data-model="automod.anti_spam.enabled"><span class="slider"></span></label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Message Burst Limit</label>
+              <div class="range-slider-wrap">
+                <input type="range" min="3" max="12" value="5" class="range-slider" data-model="automod.anti_spam.max_messages" data-badge="badgeSpamRate" data-unit=" msgs / 3s">
+                <span class="range-val-badge" id="badgeSpamRate">5 msgs / 3s</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Punishment</label>
+              <select class="form-select" data-model="automod.anti_spam.action">
+                <option value="timeout_5m">Timeout 5 Minutes</option>
+                <option value="timeout_1h">Timeout 1 Hour</option>
+                <option value="delete">Delete Message Only</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Anti-Invite Card -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317684642840686.webp" class="discord-emoji" alt="Invite"> Anti-Invite Links</div>
+              <label class="switch"><input type="checkbox" checked data-model="automod.anti_invite.enabled"><span class="slider"></span></label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Action on Link</label>
+              <select class="form-select" data-model="automod.anti_invite.action">
+                <option value="delete_warn">Delete & Warn</option>
+                <option value="timeout_10m">Timeout 10 Minutes</option>
+                <option value="kick">Kick Immediately</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Whitelisted Invites</label>
+              <input type="text" class="form-input" data-model="automod.anti_invite.whitelist" value="discord.gg/flarex, discord.gg/support">
+            </div>
+          </div>
+
+          <!-- Mass Mention & Caps -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317296598548623.webp" class="discord-emoji" alt="Mention"> Mention & Caps Guard</div>
+              <label class="switch"><input type="checkbox" checked data-model="automod.anti_mention.enabled"><span class="slider"></span></label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Max Mentions</label>
+              <div class="range-slider-wrap">
+                <input type="range" min="2" max="15" value="5" class="range-slider" data-model="automod.anti_mention.max" data-badge="badgeMention" data-unit=" mentions">
+                <span class="range-val-badge" id="badgeMention">5 mentions</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Max Caps Percentage</label>
+              <div class="range-slider-wrap">
+                <input type="range" min="50" max="95" value="70" class="range-slider" data-model="automod.anti_caps.percent" data-badge="badgeCaps" data-unit="%">
+                <span class="range-val-badge" id="badgeCaps">70%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Banned Words Blacklist -->
+        <div class="config-card">
+          <div class="config-card-header">
+            <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317475917631629.webp" class="discord-emoji" alt="Error"> Word &amp; Slur Blacklist</div>
+            <button type="button" class="btn btn-primary btn-sm" id="addBannedWordBtn" aria-label="Add blacklisted word">+ Add Word</button>
+          </div>
+          <div class="config-card-desc">Messages containing these terms will be automatically intercepted and deleted by Flarex AutoMod. Click the ✕ on any tag to remove it.</div>
+          <div class="tag-chips-wrap" id="bannedWordsChipsWrap" style="margin-top: 12px; min-height: 38px; display: flex; flex-wrap: wrap; gap: 8px;">
+            <!-- Rendered dynamically via JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB: WARN CONFIG ================= -->
+      <div class="tab-content-panel" id="tab-warn_config" role="tabpanel" aria-label="Warn Configuration Module">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317421534023791.webp" class="discord-emoji large" alt="Warn Config"></div>
+            <div>
+              <div class="module-header-title">Warning & Punishment Escalation</div>
+              <div class="module-header-desc">Define infraction decay periods and progressive punishments (timeout, kick, ban, jail) triggered by warning counts.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <!-- Warning Rules Card -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317551872016525.webp" class="discord-emoji" alt="Settings"> Warning Decay & Reason</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="warnDecayDaysInput">Warning Decay / Expiration (Days)</label>
+              <input type="number" id="warnDecayDaysInput" class="form-input" data-model="warn_config.decay_days" min="1" max="365" value="30" aria-label="Warning Decay in Days">
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Active warnings automatically expire after this period.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="warnDefaultReasonInput">Default Warning Reason</label>
+              <input type="text" id="warnDefaultReasonInput" class="form-input" data-model="warn_config.default_reason" placeholder="e.g. Violation of server rules" value="Violation of server rules" aria-label="Default Warning Reason">
+            </div>
+          </div>
+
+          <!-- Escalation Summary Card -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317495278276758.webp" class="discord-emoji" alt="Punish"> Automated Actions</div>
+            </div>
+            <div class="config-card-desc">When a user reaches a warning milestone, Flarex automatically executes the configured escalation action.</div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
+              <span class="nav-badge-pill" style="color: #60a5fa; background: rgba(96,165,250,0.12);">1 Warn: Timeout 5m</span>
+              <span class="nav-badge-pill" style="color: #fbbf24; background: rgba(251,191,36,0.12);">2 Warns: Timeout 1h</span>
+              <span class="nav-badge-pill" style="color: #f87171; background: rgba(248,113,113,0.12);">3 Warns: Kick / Temp Ban</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Warning Escalation Ladder Table Card -->
+        <div class="config-card" style="margin-top: 20px;">
+          <div class="config-card-header">
+            <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317427519553577.webp" class="discord-emoji" alt="Tiers"> Warning Escalation Tiers</div>
+            <button type="button" class="btn btn-primary btn-sm" id="addWarnTierBtn" aria-label="Add Warning Escalation Tier">+ Add Tier</button>
+          </div>
+          <div class="custom-table-wrap">
+            <table class="custom-table" aria-label="Warning Escalation Tiers">
+              <thead>
+                <tr>
+                  <th>Warn Threshold</th>
+                  <th>Escalation Action</th>
+                  <th>Duration</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="warnTiersTableBody">
+                <!-- Populated via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB: JAIL ================= -->
+      <div class="tab-content-panel" id="tab-jail" role="tabpanel" aria-label="Jail Module">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317495278276758.webp" class="discord-emoji large" alt="Jail"></div>
+            <div>
+              <div class="module-header-title">Jail & Isolation Chamber</div>
+              <div class="module-header-desc">Quarantine unruly members into a restricted isolation room while safely preserving and stripping their roles.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <!-- Jail Routing Card -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317323777507410.webp" class="discord-emoji" alt="Channel"> Channel & Role Routing</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="jailRoleSelect">Jail / Quarantine Role</label>
+              <select id="jailRoleSelect" class="form-select" data-model="jail.jail_role_id" data-role-picker="true" aria-label="Select Jail Role">
+                <option value="">-- Select Role --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="jailChannelSelect">Jail Text Channel (Isolation Cell)</label>
+              <select id="jailChannelSelect" class="form-select" data-model="jail.jail_channel_id" data-channel-picker="text" aria-label="Select Jail Text Channel">
+                <option value="">-- Select Channel --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="jailLogChannelSelect">Jail Audit Log Channel</label>
+              <select id="jailLogChannelSelect" class="form-select" data-model="jail.log_channel_id" data-channel-picker="text" aria-label="Select Jail Log Channel">
+                <option value="">-- Default Mod-Logs --</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Jail Policy Card -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317551872016525.webp" class="discord-emoji" alt="Policy"> Isolation Behavior</div>
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 13px; font-weight: 600; color: #fff;">Clear Existing Roles on Jail</div>
+                  <div style="font-size: 11.5px; color: var(--text-muted);">Temporarily removes all member roles and restores them upon release.</div>
+                </div>
+                <label class="switch"><input type="checkbox" checked data-model="jail.clear_roles" aria-label="Toggle Clear Existing Roles"><span class="slider"></span></label>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 18px;">
+              <label class="form-label" for="jailDefaultDurationInput">Default Sentence Duration</label>
+              <input type="text" id="jailDefaultDurationInput" class="form-input" data-model="jail.default_duration" placeholder="e.g. 1h, 24h, 7d" value="1h" aria-label="Default Sentence Duration">
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Applied when moderators execute /jail without specifying a duration.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB: VERIFICATION ================= -->
+      <div class="tab-content-panel" id="tab-verification" role="tabpanel" aria-label="Verification Module">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji large" alt="Verification"></div>
+            <div>
+              <div class="module-header-title">Member Verification Gate</div>
+              <div class="module-header-desc">Require interactive button or CAPTCHA validation before new members gain access to server channels.</div>
+            </div>
+          </div>
+          <div class="master-switch-wrap">
+            <span class="master-switch-label" id="verificationStatusLabel" style="color: var(--status-online);"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji small" alt="Status"> Active</span>
+            <label class="switch">
+              <input type="checkbox" checked data-model="verification.enabled" data-status-label="verificationStatusLabel" aria-label="Enable Verification">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <!-- Channel & Role Card -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317276105048155.webp" class="discord-emoji" alt="Roles"> Gate Routing</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="verifChannelSelect">Verification Channel</label>
+              <select id="verifChannelSelect" class="form-select" data-model="verification.channel_id" data-channel-picker="text" aria-label="Select Verification Channel">
+                <option value="">-- Select Channel --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="verifVerifiedRoleSelect">Verified Role (Granted on Success)</label>
+              <select id="verifVerifiedRoleSelect" class="form-select" data-model="verification.verified_role_id" data-role-picker="true" aria-label="Select Verified Role">
+                <option value="">-- Select Role --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="verifUnverifiedRoleSelect">Unverified Role (Removed on Success)</label>
+              <select id="verifUnverifiedRoleSelect" class="form-select" data-model="verification.unverified_role_id" data-role-picker="true" aria-label="Select Unverified Role">
+                <option value="">-- None / Default --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="verifLogChannelSelect">Verification Log Channel</label>
+              <select id="verifLogChannelSelect" class="form-select" data-model="verification.log_channel_id" data-channel-picker="text" aria-label="Select Verification Log Channel">
+                <option value="">-- None / Default --</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Gate Policy & Security Card -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317317213290496.webp" class="discord-emoji" alt="Security"> Gate Security Policy</div>
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 13px; font-weight: 600; color: #fff;">Require Image CAPTCHA</div>
+                  <div style="font-size: 11.5px; color: var(--text-muted);">Generates an encrypted image CAPTCHA code to solve.</div>
+                </div>
+                <label class="switch"><input type="checkbox" data-model="verification.require_captcha" aria-label="Toggle Image CAPTCHA"><span class="slider"></span></label>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 14px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 13px; font-weight: 600; color: #fff;">Kick on Max Failed Attempts</div>
+                  <div style="font-size: 11.5px; color: var(--text-muted);">Automatically kick user if they fail verification attempts.</div>
+                </div>
+                <label class="switch"><input type="checkbox" checked data-model="verification.kick_on_fail" aria-label="Toggle Kick on Fail"><span class="slider"></span></label>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 14px;">
+              <label class="form-label" for="verifMinAgeInput">Minimum Account Age (Days)</label>
+              <input type="number" id="verifMinAgeInput" class="form-input" data-model="verification.min_account_age_days" min="0" max="365" value="0" placeholder="0 for no age limit" aria-label="Minimum Account Age in Days">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="verifMaxAttemptsInput">Maximum Attempts Allowed</label>
+              <input type="number" id="verifMaxAttemptsInput" class="form-input" data-model="verification.max_attempts" min="1" max="10" value="3" aria-label="Maximum Attempts Allowed">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="verifAutoKickHoursInput">Auto-Kick Unverified Users (Hours)</label>
+              <input type="number" id="verifAutoKickHoursInput" class="form-input" data-model="verification.autokick_hours" min="0" max="168" value="24" placeholder="0 to disable" aria-label="Auto Kick Unverified Users in Hours">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB: REACTION ROLES ================= -->
+      <div class="tab-content-panel" id="tab-reaction_roles" role="tabpanel" aria-label="Reaction Roles Module">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317276105048155.webp" class="discord-emoji large" alt="Reaction Roles"></div>
+            <div>
+              <div class="module-header-title">Reaction & Button Roles</div>
+              <div class="module-header-desc">Allow server members to claim or toggle roles by reacting to messages or clicking custom interactive buttons.</div>
+            </div>
+          </div>
+          <div class="master-switch-wrap">
+            <span class="master-switch-label" id="reactionRolesStatusLabel" style="color: var(--status-online);"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji small" alt="Status"> Active</span>
+            <label class="switch">
+              <input type="checkbox" checked data-model="reaction_roles.enabled" data-status-label="reactionRolesStatusLabel" aria-label="Enable Reaction Roles">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="config-card">
+          <div class="config-card-header">
+            <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317276105048155.webp" class="discord-emoji" alt="Roles"> Active Reaction Role Bindings</div>
+            <button type="button" class="btn btn-primary btn-sm" id="addReactionRoleBtn" aria-label="Add Reaction Role Binding">+ Add Reaction Role</button>
+          </div>
+          <div class="custom-table-wrap">
+            <table class="custom-table" aria-label="Reaction Role Bindings">
+              <thead>
+                <tr>
+                  <th>Channel</th>
+                  <th>Message ID</th>
+                  <th>Emoji</th>
+                  <th>Assigned Role</th>
+                  <th>Mode</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="reactionRolesTableBody">
+                <!-- Populated via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB: STARBOARD ================= -->
+      <div class="tab-content-panel" id="tab-starboard" role="tabpanel" aria-label="Starboard Module">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317427519553577.webp" class="discord-emoji large" alt="Starboard"></div>
+            <div>
+              <div class="module-header-title">Starboard Showcase</div>
+              <div class="module-header-desc">Pin and showcase high-engagement community messages into a dedicated spotlight channel.</div>
+            </div>
+          </div>
+          <div class="master-switch-wrap">
+            <span class="master-switch-label" id="starboardStatusLabel" style="color: var(--status-online);"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji small" alt="Status"> Active</span>
+            <label class="switch">
+              <input type="checkbox" checked data-model="starboard.enabled" data-status-label="starboardStatusLabel" aria-label="Enable Starboard">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317323777507410.webp" class="discord-emoji" alt="Channel"> Starboard Channel & Emoji</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="starboardChannelSelect">Starboard Showcase Channel</label>
+              <select id="starboardChannelSelect" class="form-select" data-model="starboard.channel_id" data-channel-picker="text" aria-label="Select Starboard Channel">
+                <option value="">-- Select Channel --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="starboardEmojiInput">Starboard Emoji</label>
+              <input type="text" id="starboardEmojiInput" class="form-input" data-model="starboard.emoji" value="⭐" placeholder="e.g. ⭐, 🌟, 👑" aria-label="Starboard Emoji">
+            </div>
+          </div>
+
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317551872016525.webp" class="discord-emoji" alt="Threshold"> Thresholds & Permissions</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="starboardThresholdInput">Star Reaction Threshold</label>
+              <div class="range-slider-wrap">
+                <input type="range" id="starboardThresholdInput" min="1" max="25" value="3" class="range-slider" data-model="starboard.threshold" data-badge="badgeStarboardThreshold" data-unit=" stars" aria-label="Star Reaction Threshold">
+                <span class="range-val-badge" id="badgeStarboardThreshold">3 stars</span>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 18px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 13px; font-weight: 600; color: #fff;">Allow Self-Starring</div>
+                  <div style="font-size: 11.5px; color: var(--text-muted);">Count reactions from the original message author towards the threshold.</div>
+                </div>
+                <label class="switch"><input type="checkbox" data-model="starboard.self_star" aria-label="Toggle Self Starring"><span class="slider"></span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 4: WELCOMER & EMBED BUILDER ================= -->
+      <div class="tab-content-panel" id="tab-welcomer">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317627898105946.webp" class="discord-emoji large" alt="Welcomer"></div>
+            <div>
+              <div class="module-header-title">Welcomer, Canvas & Embed Studio</div>
+              <div class="module-header-desc">Create breathtaking arrival experiences with custom Discord embeds, canvas cards, autoroles, and goodbye notifications.</div>
+            </div>
+          </div>
+          <div class="master-switch-wrap">
+            <span class="master-switch-label" id="welcomerStatusLabel" style="color: var(--status-online);"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji small"> Active</span>
+            <label class="switch">
+              <input type="checkbox" checked data-model="welcomer.enabled" data-status-label="welcomerStatusLabel">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <!-- Left: Embed Configuration Form -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317622881583215.webp" class="discord-emoji" alt="Edit"> Greeting Setup</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Welcome Channel</label>
+              <select class="form-select" id="welcomeChannelSelect" data-model="welcomer.channel" data-channel-picker="text">
+                <option value="">-- Select Welcome Channel --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Embed Title</label>
+              <input type="text" id="welcomeEmbedTitle" data-model="welcomer.title" class="form-input" value="✨ Welcome to {server.name}!">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Embed Description</label>
+              <textarea id="welcomeEmbedDesc" data-model="welcomer.description" class="form-textarea" rows="4">Hey {user.mention}, welcome to the server! Make sure to read our rules and enjoy your stay with us. You are member #{server.member_count}!</textarea>
+            </div>
+
+            <!-- Dynamic Tag Variable Chips -->
+            <div class="form-group">
+              <label class="form-label">Insert Dynamic Placeholders</label>
+              <div class="tag-chips-wrap">
+                <button type="button" class="tag-chip" data-target="welcomeEmbedDesc" data-tag="{user.mention}">{user.mention}</button>
+                <button type="button" class="tag-chip" data-target="welcomeEmbedDesc" data-tag="{user.name}">{user.name}</button>
+                <button type="button" class="tag-chip" data-target="welcomeEmbedDesc" data-tag="{server.name}">{server.name}</button>
+                <button type="button" class="tag-chip" data-target="welcomeEmbedDesc" data-tag="{server.member_count}">{server.member_count}</button>
+                <button type="button" class="tag-chip" data-target="welcomeEmbedDesc" data-tag="{created_at}">{created_at}</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Accent Border Color</label>
+              <input type="color" id="welcomeEmbedColor" data-model="welcomer.color" class="form-input" value="#df9b6d" style="height: 42px; cursor: pointer;">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Embed Footer</label>
+              <input type="text" id="welcomeEmbedFooter" data-model="welcomer.footer" class="form-input" value="Flarex Security System • {created_at}">
+            </div>
+          </div>
+
+          <!-- Right: Live Discord Preview & Autoroles -->
+          <div>
+            <div class="config-card" style="margin-bottom: 20px;">
+              <div class="config-card-header">
+                <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317547824517140.webp" class="discord-emoji" alt="Preview"> Live Discord Preview</div>
+                <span class="metric-change-badge" style="background: rgba(96,165,250,0.15); color: #60a5fa;">Real-Time</span>
+              </div>
+              
+              <!-- Discord Widget -->
+              <div class="discord-preview-box">
+                <div class="discord-user-header">
+                  <img src="assets/flarex_logo.png" class="discord-avatar" alt="Flarex Logo">
+                  <div>
+                    <div class="discord-author-info">
+                      <span class="discord-author-name">
+                        <img src="assets/flarex_logo.png" class="discord-emoji" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;" alt="Flarex Logo">Flarex
+                      </span>
+                      <span class="discord-bot-tag">BOT</span>
+                      <span class="discord-timestamp">Today at 12:34 PM</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="discord-embed-card" id="previewEmbedCard">
+                  <div class="discord-embed-title" id="previewEmbedTitle">✨ Welcome to Flarex Official HQ!</div>
+                  <div class="discord-embed-desc" id="previewEmbedDesc">Hey @User, welcome to the server! Make sure to read our rules and enjoy your stay with us. You are member #{server.member_count}!</div>
+                  <div class="discord-embed-footer" id="previewEmbedFooter">
+                    <img src="assets/flarex_logo.png" class="discord-emoji" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;" alt="Flarex Logo">Flarex Security System • Today at 12:34 PM
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Autoroles Card -->
+            <div class="config-card">
+              <div class="config-card-header">
+                <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317286867501070.webp" class="discord-emoji" alt="Autoroles"> Auto-Roles on Join</div>
+                <button type="button" class="btn btn-secondary btn-sm" id="addNewAutoroleBtn" style="font-size: 11px; padding: 4px 10px;">+ Add Role</button>
+              </div>
+              <div class="tag-chips-wrap" id="welcomerAutorolesContainer">
+                <!-- Dynamically rendered via JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 5: LEVELING ================= -->
+      <div class="tab-content-panel" id="tab-leveling">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1552116357884149842.gif" class="discord-emoji large" alt="Leveling"></div>
+            <div>
+              <div class="module-header-title">Leveling, XP & Role Rewards</div>
+              <div class="module-header-desc">Incentivize member engagement with XP multipliers, milestone role rewards, and automated rank-up notifications.</div>
+            </div>
+          </div>
+          <div class="master-switch-wrap">
+            <span class="master-switch-label" id="levelingStatusLabel" style="color: var(--status-online);"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji small"> Active</span>
+            <label class="switch">
+              <input type="checkbox" checked data-model="leveling.enabled" data-status-label="levelingStatusLabel">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317368241192980.webp" class="discord-emoji" alt="XP"> XP Rate & Announcements</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="display: flex; align-items: center; justify-content: space-between;">
+                <span>Global XP Multiplier</span>
+                <span class="nav-badge-pill" style="background: rgba(234, 179, 8, 0.2); color: #facc15; font-size: 9px; padding: 2px 6px; font-weight: 800;">GOLD - OBSIDIAN BOOST</span>
+              </label>
+              <div class="range-slider-wrap">
+                <input type="range" min="0.5" max="3.0" step="0.1" value="1.5" class="range-slider" data-model="leveling.multiplier" data-badge="badgeXpRate" data-unit="x">
+                <span class="range-val-badge" id="badgeXpRate">1.5x</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Announcement Target</label>
+              <select class="form-select" data-model="leveling.target">
+                <option value="current" selected>Current Channel where user spoke</option>
+                <option value="channel">Dedicated Level-Up Channel</option>
+                <option value="dm">Direct Message (DM)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Level Up Message</label>
+              <input type="text" class="form-input" data-model="leveling.message" value="🎉 GG {user.mention}! You just leveled up to **Level {level}**!">
+            </div>
+          </div>
+
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317276105048155.webp" class="discord-emoji" alt="Roles"> Role Reward Milestones</div>
+              <button type="button" class="btn btn-primary btn-sm" id="addNewLevelRewardBtn">+ Add Milestone</button>
+            </div>
+            <div class="custom-table-wrap" id="levelRewardsContainer">
+              <!-- Dynamically populated via JavaScript -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-Time Server Leveling Leaderboard Card -->
+        <div class="config-card" style="margin-top: 20px;">
+          <div class="config-card-header">
+            <div>
+              <div class="config-card-title"><img src="assets/crown.png" class="discord-emoji" alt="Leaderboard"> Server Leveling Leaderboard (Live)</div>
+              <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">Real-time ranking of top active members in this server based on chat XP.</div>
+            </div>
+            <span class="nav-badge-pill" id="leaderboardTotalCountBadge" style="background: var(--accent-subtle); color: var(--accent-copper); font-weight: 600;">0 Members Ranked</span>
+          </div>
+          <div class="custom-table-wrap" id="levelingLeaderboardContainer">
+            <!-- Dynamically populated via JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 6: MUSIC ================= -->
+      <div class="tab-content-panel" id="tab-music">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317695782785076.webp" class="discord-emoji large" alt="Music"></div>
+            <div>
+              <div class="module-header-title">Music Engine & Audio Studio</div>
+              <div class="module-header-desc">High-fidelity 24/7 playback with Lavalink audio filters, multi-engine search fallbacks, and DJ permissions.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317695782785076.webp" class="discord-emoji" alt="Volume"> Player Controls</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Default Player Volume</label>
+              <div class="range-slider-wrap">
+                <input type="range" min="10" max="150" value="100" class="range-slider" data-model="music.default_volume" data-badge="badgeVolume" data-unit="%">
+                <span class="range-val-badge" id="badgeVolume">100%</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="display: flex; align-items: center; justify-content: space-between;">
+                <span>24/7 Voice Channel Mode</span>
+                <span class="nav-badge-pill" style="background: rgba(234, 179, 8, 0.2); color: #facc15; font-size: 9px; padding: 2px 6px; font-weight: 800;">GOLD+</span>
+              </label>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+                <span style="font-size: 13px; color: var(--text-secondary);">Keep Flarex connected in voice channel</span>
+                <label class="switch"><input type="checkbox" checked data-model="music.stay_247"><span class="slider"></span></label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Inactivity Disconnect Timeout</label>
+              <div class="range-slider-wrap">
+                <input type="range" min="30" max="300" step="10" value="120" class="range-slider" data-model="music.idle_timeout" data-badge="badgeMusicTimeout" data-unit="s">
+                <span class="range-val-badge" id="badgeMusicTimeout">120s</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317368241192980.webp" class="discord-emoji" alt="Equalizer"> Equalizer & DJ Settings</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Default Audio Filter Preset</label>
+              <select class="form-select" data-model="music.equalizer">
+                <option value="bass_boost" selected>Heavy Bass Boost (Recommended)</option>
+                <option value="nightcore">Nightcore (+15% Pitch & Speed)</option>
+                <option value="spatial_8d">8D Spatial Audio</option>
+                <option value="flat">Flat / Standard EQ</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">DJ Role Requirement</label>
+              <select class="form-select" data-model="music.dj_role" data-role-picker="true">
+                <option value="">Anyone can control playback</option>
+                <option value="dj" selected>Only @DJ Role can skip/stop songs</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 7: ECONOMY ================= -->
+      <div class="tab-content-panel" id="tab-economy">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317618095882442.webp" class="discord-emoji large" alt="Economy"></div>
+            <div>
+              <div class="module-header-title">Economy & Casino Engine</div>
+              <div class="module-header-desc">Custom currency, daily streaks, robbery mechanics, and casino slots/dice mini-games.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-grid-3col">
+          <div class="config-card">
+            <div class="config-card-title" style="margin-bottom: 12px;"><img src="https://cdn.discordapp.com/emojis/1525317618095882442.webp" class="discord-emoji" alt="Currency"> Currency</div>
+            <div class="form-group">
+              <label class="form-label">Currency Symbol</label>
+              <input type="text" class="form-input" data-model="economy.currency_symbol" value="🪙">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Starting Wallet</label>
+              <input type="number" class="form-input" data-model="economy.starting_balance" value="1000">
+            </div>
+          </div>
+
+          <div class="config-card">
+            <div class="config-card-title" style="margin-bottom: 12px;"><img src="https://cdn.discordapp.com/emojis/1525317427519553577.webp" class="discord-emoji" alt="Daily"> Daily & Work</div>
+            <div class="form-group">
+              <label class="form-label">Daily Claim Amount</label>
+              <input type="number" class="form-input" data-model="economy.daily_amount" value="500">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Work Payout Range</label>
+              <input type="text" class="form-input" data-model="economy.work_range" value="150 - 450">
+            </div>
+          </div>
+
+          <div class="config-card">
+            <div class="config-card-title" style="margin-bottom: 12px;"><img src="https://cdn.discordapp.com/emojis/1525317495278276758.webp" class="discord-emoji" alt="Robbery"> Robbery Rates</div>
+            <div class="form-group">
+              <label class="form-label">Success Rate</label>
+              <div class="range-slider-wrap">
+                <input type="range" min="10" max="60" value="35" class="range-slider" data-model="economy.rob_success_rate" data-badge="badgeRobRate" data-unit="%">
+                <span class="range-val-badge" id="badgeRobRate">35%</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Shield Duration</label>
+              <input type="text" class="form-input" data-model="economy.shield_duration" value="24 Hours">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 8: TICKETS ================= -->
+      <div class="tab-content-panel" id="tab-tickets">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317581282476102.webp" class="discord-emoji large" alt="Tickets"></div>
+            <div>
+              <div class="module-header-title">Ticket Panels & Ratings</div>
+              <div class="module-header-desc">Multi-panel support categories with automated HTML transcripts, response time tracking, and 5-star customer ratings.</div>
+            </div>
+          </div>
+          <div class="master-switch-wrap">
+            <span class="master-switch-label" id="ticketsStatusLabel" style="color: var(--status-online);"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji small"> Active</span>
+            <label class="switch">
+              <input type="checkbox" checked data-model="tickets.enabled" data-status-label="ticketsStatusLabel">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="config-card">
+          <div class="config-card-header">
+            <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317581282476102.webp" class="discord-emoji" alt="Categories"> Configured & Discovered Ticket Panels</div>
+            <button type="button" class="btn btn-primary btn-sm" id="addNewTicketPanelBtn">+ Add Ticket Panel</button>
+          </div>
+          <div class="custom-table-wrap" id="ticketPanelsContainer">
+            <!-- Dynamically populated via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Discovered Server Ticket Channels & Categories Card -->
+        <div class="config-card" style="margin-top: 20px;" id="discoveredTicketsCard">
+          <div class="config-card-header">
+            <div>
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317323777507410.webp" class="discord-emoji" alt="Channels"> Discovered Server Ticket Channels & Categories</div>
+              <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">Recognized ticket categories and channels currently existing in this Discord server.</div>
+            </div>
+            <span class="nav-badge-pill" id="discoveredTicketsCountBadge" style="background: rgba(74,222,128,0.12); color: #4ade80;">0 Discovered</span>
+          </div>
+          <div id="discoveredTicketChannelsContainer" style="padding: 16px 20px;">
+            <!-- Dynamically populated via JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 9: GIVEAWAYS ================= -->
+      <div class="tab-content-panel" id="tab-giveaways">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317427519553577.webp" class="discord-emoji large" alt="Giveaways"></div>
+            <div>
+              <div class="module-header-title">Giveaway Hub & Requirements</div>
+              <div class="module-header-desc">Create and manage giveaways with advanced eligibility criteria like required roles, account age, invites, and level thresholds.</div>
+            </div>
+          </div>
+          <div class="master-switch-wrap">
+            <span class="master-switch-label" id="giveawaysStatusLabel" style="color: var(--status-online);"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji small"> Active</span>
+            <label class="switch">
+              <input type="checkbox" checked data-model="giveaways.enabled" data-status-label="giveawaysStatusLabel">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="config-card">
+          <div class="config-card-header">
+            <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317427519553577.webp" class="discord-emoji" alt="Giveaways"> Active Server Giveaways</div>
+            <button type="button" class="btn btn-primary btn-sm" id="launchGiveawayBtn">+ Launch Giveaway</button>
+          </div>
+          <div class="custom-table-wrap" id="giveawaysContainer">
+            <!-- Dynamically populated via JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 10: LOGS & WEBHOOKS ================= -->
+      <div class="tab-content-panel" id="tab-logs">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317246543597648.webp" class="discord-emoji large" alt="Logs"></div>
+            <div>
+              <div class="module-header-title">Server Audit Logs & Webhooks</div>
+              <div class="module-header-desc">Route all moderation, voice, join/leave, and security incidents into dedicated Discord channels.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <div class="config-card">
+            <div class="config-card-title" style="margin-bottom: 14px;"><img src="https://cdn.discordapp.com/emojis/1525317323777507410.webp" class="discord-emoji" alt="Channel"> Log Channel Routing</div>
+            <div class="form-group">
+              <label class="form-label">🛡️ Security & Antinuke Alerts</label>
+              <select class="form-select" data-model="logs.security_channel" data-channel-picker="text"><option value="">-- Select Channel --</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">🔨 Moderation Actions</label>
+              <select class="form-select" data-model="logs.mod_channel" data-channel-picker="text"><option value="">-- Select Channel --</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">📝 Message Edits & Deletions</label>
+              <select class="form-select" data-model="logs.message_channel" data-channel-picker="text"><option value="">-- Select Channel --</option></select>
+            </div>
+          </div>
+
+          <div class="config-card">
+            <div class="config-card-title" style="margin-bottom: 14px;"><img src="https://cdn.discordapp.com/emojis/1525317249085345882.webp" class="discord-emoji" alt="Member"> Member & Voice Routing</div>
+            <div class="form-group">
+              <label class="form-label">👤 Member Joins & Leaves</label>
+              <select class="form-select" data-model="logs.member_channel" data-channel-picker="text"><option value="">-- Select Channel --</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">🎙️ Voice Activity Logs</label>
+              <select class="form-select" data-model="logs.voice_channel" data-channel-picker="voice"><option value="">-- Select Channel --</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">⚙️ Server & Role Updates</label>
+              <select class="form-select" data-model="logs.server_channel" data-channel-picker="text"><option value="">-- Select Channel --</option></select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB: COMMAND ACCESS ================= -->
+      <div class="tab-content-panel" id="tab-command_access" role="tabpanel" aria-label="Command Access and Rate Limits Module">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317551872016525.webp" class="discord-emoji large" alt="Command Access"></div>
+            <div>
+              <div class="module-header-title">Command Permissions, Rate Limits &amp; Cooldowns</div>
+              <div class="module-header-desc">Configure sliding-window command rate limits, anti-flood strike mitigation, tier-aware cooldown multipliers, administrator bypass, and disabled commands.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <!-- Card 1: Bot Command Rate Limiter (reo/utils/rate_limiter.py) -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317246543597648.webp" class="discord-emoji" alt="Rate Limit"> Command Rate Limiter &amp; Anti-Flood</div>
+              <label class="switch"><input type="checkbox" checked data-model="command_access.rate_limits.enabled" aria-label="Toggle Rate Limiting"><span class="slider"></span></label>
+            </div>
+            <div class="config-card-desc">Protects the bot and server against rapid command flooding, multi-command macros, and bot-directed spam raids.</div>
+
+            <!-- User Global Burst Limit -->
+            <div class="form-group" style="margin-top: 14px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label class="form-label" style="margin: 0;">User Command Rate Limit (per 10s)</label>
+                <span class="range-val-badge" id="badgeUserMax">6 cmds</span>
+              </div>
+              <div class="range-wrap" style="margin-top: 8px;">
+                <input type="range" min="1" max="20" value="6" class="range-slider" data-model="command_access.rate_limits.user_max" data-badge="badgeUserMax" data-unit=" cmds" aria-label="User Command Rate Limit">
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Max commands a single member can issue across all channels every 10 seconds.</div>
+            </div>
+
+            <!-- Single Command Hammering Limit -->
+            <div class="form-group" style="margin-top: 14px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label class="form-label" style="margin: 0;">Single Command Repeat Cap (per 10s)</label>
+                <span class="range-val-badge" id="badgeCmdMax">3 uses</span>
+              </div>
+              <div class="range-wrap" style="margin-top: 8px;">
+                <input type="range" min="1" max="10" value="3" class="range-slider" data-model="command_access.rate_limits.command_max" data-badge="badgeCmdMax" data-unit=" uses" aria-label="Single Command Repeat Cap">
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Prevents rapid spamming of a single command (e.g. repeated pinging, rolls, or music skips).</div>
+            </div>
+
+            <!-- Server-Wide Burst Cap -->
+            <div class="form-group" style="margin-top: 14px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label class="form-label" style="margin: 0;">Server-Wide Total Burst Cap (per 10s)</label>
+                <span class="range-val-badge" id="badgeGuildMax">40 cmds</span>
+              </div>
+              <div class="range-wrap" style="margin-top: 8px;">
+                <input type="range" min="10" max="100" value="40" class="range-slider" data-model="command_access.rate_limits.guild_max" data-badge="badgeGuildMax" data-unit=" cmds" aria-label="Server-Wide Burst Cap">
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Maximum total commands across all server members combined within any 10-second window.</div>
+            </div>
+
+            <!-- Strike Mitigation Notice -->
+            <div style="margin-top: 14px; padding: 10px 14px; background: rgba(28, 18, 14, 0.7); border: 1px solid var(--accent-border); border-radius: var(--radius-sm); font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;">
+              <span style="color: var(--accent-copper-light); font-weight: 700;">⚡ Strike Auto-Lockout:</span> 3 rapid limit breaches inside 10m automatically escalates into temporary command blocks (30s → 2m → 5m → 10m).
+            </div>
+          </div>
+
+          <!-- Card 2: Cooldown Multiplier & Speedup (reo/utils/tier_cooldowns.py) -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji" alt="Cooldowns"> Cooldown Multiplier &amp; Speed</div>
+            </div>
+            <div class="config-card-desc">Adjust individual command cooldown speed. Higher premium tiers automatically speed up every command cooldown on this guild.</div>
+
+            <!-- Live Tier Multiplier Status -->
+            <div style="margin-top: 14px; padding: 12px 14px; background: var(--bg-sidebar); border: 1px solid var(--accent-border); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">ACTIVE TIER COOLDOWN ACCELERATION</div>
+                <div style="font-size: 15px; font-weight: 800; color: var(--text-primary); margin-top: 2px;" id="activeTierCooldownLabel">Standard Speed (1.00x Base)</div>
+              </div>
+              <span class="nav-badge-pill" id="tierCooldownSpeedBadge" style="background: rgba(184, 137, 99, 0.2); color: var(--accent-copper-light); border: 1px solid var(--accent-border); font-weight: 800;">1.00x</span>
+            </div>
+
+            <!-- Custom Guild Cooldown Slider -->
+            <div class="form-group" style="margin-top: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <label class="form-label" style="margin: 0;">Guild Cooldown Speed Override</label>
+                <span class="range-val-badge" id="badgeCooldownMult">1.00x</span>
+              </div>
+              <div class="range-wrap" style="margin-top: 8px;">
+                <input type="range" min="0.10" max="1.50" step="0.05" value="1.00" class="range-slider" data-model="command_access.cooldown_multiplier" data-badge="badgeCooldownMult" data-unit="x" aria-label="Cooldown Multiplier Slider">
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Lower multiplier reduces cooldown wait time (e.g. 0.50x cuts all command delays in half).</div>
+            </div>
+
+            <!-- Administrator Bypass Policy -->
+            <div class="form-group" style="margin-top: 16px; padding-top: 12px; border-top: 1px solid rgba(101, 69, 51, 0.3);">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 13px; font-weight: 600; color: #fff;">Administrator &amp; Owner Bypass</div>
+                  <div style="font-size: 11.5px; color: var(--text-muted);">Users with Administrator or Server Owner bypass all command cooldowns &amp; restrictions.</div>
+                </div>
+                <label class="switch"><input type="checkbox" checked data-model="command_access.admin_bypass" aria-label="Toggle Administrator Bypass"><span class="slider"></span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle Grid: Disabled Commands & Quick Modules -->
+        <div class="config-grid-2col" style="margin-top: 20px;">
+          <!-- Disabled Commands List Card -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317475917631629.webp" class="discord-emoji" alt="Disabled"> Disabled Commands List</div>
+            </div>
+            <div class="config-card-desc">Enter command names separated by spaces or commas to disable them across the entire server.</div>
+            <div class="form-group" style="margin-top: 12px;">
+              <input type="text" id="disabledCommandsInput" class="form-input" data-model="command_access.disabled_commands" placeholder="e.g. rob, gamble, 8ball, coinflip" aria-label="Disabled Commands List">
+            </div>
+          </div>
+
+          <!-- Quick Module Status Card -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525316796289388765.webp" class="discord-emoji" alt="Modules"> Quick Module Status</div>
+            </div>
+            <div class="config-card-desc">Live status overview of core command systems.</div>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 12px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12.5px;">
+                <span>🛡️ Antinuke &amp; Raid Engine</span>
+                <span class="nav-badge-pill" style="color: var(--status-online); background: rgba(74,222,128,0.12);">Active</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12.5px;">
+                <span>🪙 Economy &amp; Games</span>
+                <span class="nav-badge-pill" style="color: var(--status-online); background: rgba(74,222,128,0.12);">Active</span>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12.5px;">
+                <span>🎵 Music &amp; Voice 24/7</span>
+                <span class="nav-badge-pill" style="color: var(--status-online); background: rgba(74,222,128,0.12);">Active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comprehensive Command Rate Limits & Cooldowns Directory Table -->
+        <div class="config-card" style="margin-top: 20px;">
+          <div class="config-card-header" style="flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317246543597648.webp" class="discord-emoji" alt="Directory"> Command Rate Limits &amp; Cooldown Directory</div>
+              <div class="config-card-desc" style="margin-top: 4px;">Live overview of base and effective cooldowns on every primary bot command.</div>
+            </div>
+            <input type="text" id="cmdDirectorySearchInput" class="form-input" placeholder="🔍 Search command..." style="max-width: 220px; font-size: 12px; padding: 6px 12px;">
+          </div>
+
+          <div class="custom-table-wrap" style="margin-top: 14px;">
+            <table class="custom-table" id="commandDirectoryTable" aria-label="Command Cooldown Directory">
+              <thead>
+                <tr>
+                  <th>Command</th>
+                  <th>Category</th>
+                  <th>Base Cooldown</th>
+                  <th>Effective Cooldown</th>
+                  <th>Rate Limit Scope</th>
+                  <th>Required Permission</th>
+                </tr>
+              </thead>
+              <tbody id="commandDirectoryTableBody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB: CASES & MODLOGS ================= -->
+      <div class="tab-content-panel" id="tab-cases" role="tabpanel" aria-label="Cases and Modlogs Module">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317495278276758.webp" class="discord-emoji large" alt="Cases"></div>
+            <div>
+              <div class="module-header-title">Moderation Cases & Logs</div>
+              <div class="module-header-desc">Audit real-time punitive actions, track moderator case numbers, and route incident logs to staff channels.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <!-- Modlog Routing & Policy Card -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317323777507410.webp" class="discord-emoji" alt="Channel"> Mod-Log Channels</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="caseModlogChannelSelect">Official Mod-Log Channel</label>
+              <select id="caseModlogChannelSelect" class="form-select" data-model="cases.modlog_channel_id" data-channel-picker="text" aria-label="Select Modlog Channel">
+                <option value="">-- Select Channel --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="caseCommandChannelSelect">Mod Command Incident Channel</label>
+              <select id="caseCommandChannelSelect" class="form-select" data-model="cases.command_channel_id" data-channel-picker="text" aria-label="Select Command Log Channel">
+                <option value="">-- Select Channel --</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Moderation Policies Card -->
+          <div class="config-card">
+            <div class="config-card-header">
+              <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317551872016525.webp" class="discord-emoji" alt="Policy"> Moderation Policies</div>
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 13px; font-weight: 600; color: #fff;">Require Reason for Actions</div>
+                  <div style="font-size: 11.5px; color: var(--text-muted);">Forces staff to supply a reason when banning, kicking, or warning.</div>
+                </div>
+                <label class="switch"><input type="checkbox" checked data-model="cases.require_reason" aria-label="Toggle Require Reason"><span class="slider"></span></label>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 14px;">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                  <div style="font-size: 13px; font-weight: 600; color: #fff;">Direct Message Offender</div>
+                  <div style="font-size: 11.5px; color: var(--text-muted);">Sends an automated DM with reason and duration to punished users.</div>
+                </div>
+                <label class="switch"><input type="checkbox" checked data-model="cases.dm_user_on_action" aria-label="Toggle Direct Message Offender"><span class="slider"></span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Moderation Cases Table Card -->
+        <div class="config-card" style="margin-top: 20px;">
+          <div class="config-card-header">
+            <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317246543597648.webp" class="discord-emoji" alt="Cases"> Recent Moderation Cases</div>
+            <button type="button" class="btn btn-secondary btn-sm" id="refreshCasesBtn" aria-label="Refresh Moderation Cases">🔄 Refresh Cases</button>
+          </div>
+          <div class="custom-table-wrap">
+            <table class="custom-table" aria-label="Recent Moderation Cases">
+              <thead>
+                <tr>
+                  <th>Case #</th>
+                  <th>Action</th>
+                  <th>Target User</th>
+                  <th>Moderator</th>
+                  <th>Reason</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody id="casesTableBody">
+                <!-- Populated via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 11: STAFF ================= -->
+      <div class="tab-content-panel" id="tab-staff">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317596105150474.webp" class="discord-emoji large" alt="Staff"></div>
+            <div>
+              <div class="module-header-title">Staff Permissions & Hierarchy</div>
+              <div class="module-header-desc">Assign administrator and moderator access to bot management commands.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-card">
+          <div class="config-card-title" style="margin-bottom: 16px;"><img src="https://cdn.discordapp.com/emojis/1525317276105048155.webp" class="discord-emoji" alt="Roles"> Role Hierarchy</div>
+          <div class="form-group">
+            <label class="form-label">Bot Administrator Roles (Full Access)</label>
+            <div class="tag-chips-wrap">
+              <span class="tag-chip">@Server Admin ✕</span>
+              <span class="tag-chip">@Co-Owner ✕</span>
+              <span class="tag-chip" style="border-style: dashed;">+ Add Role</span>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top: 18px;">
+            <label class="form-label">Moderator Roles (Mute, Kick, Warn, Case Management)</label>
+            <div class="tag-chips-wrap">
+              <span class="tag-chip">@Moderator ✕</span>
+              <span class="tag-chip">@Trial Mod ✕</span>
+              <span class="tag-chip" style="border-style: dashed;">+ Add Role</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 12: SETTINGS ================= -->
+      <div class="tab-content-panel" id="tab-settings">
+        <div class="module-header-banner">
+          <div class="module-header-left">
+            <div class="module-header-icon"><img src="https://cdn.discordapp.com/emojis/1525317551872016525.webp" class="discord-emoji large" alt="Settings"></div>
+            <div>
+              <div class="module-header-title">General Bot Configuration</div>
+              <div class="module-header-desc">Configure server prefix, theme colors, embeds, and timezone.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="config-grid-2col">
+          <div class="config-card">
+            <div class="config-card-title" style="margin-bottom: 14px;"><img src="https://cdn.discordapp.com/emojis/1525317551872016525.webp" class="discord-emoji" alt="Prefix"> Prefix & Appearance</div>
+            <div class="form-group">
+              <label class="form-label">Bot Command Prefix</label>
+              <input type="text" class="form-input" data-model="settings.prefix" placeholder="e.g. ! or /" value="">
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="display: flex; align-items: center; justify-content: space-between;">
+                <span>Bot Nickname in Server</span>
+                <span class="nav-badge-pill" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; font-size: 9px; padding: 2px 6px; font-weight: 800;">DIAMOND+</span>
+              </label>
+              <input type="text" class="form-input" data-model="settings.nickname" placeholder="Bot nickname" value="Flarex">
+            </div>
+          </div>
+
+          <div class="config-card">
+            <div class="config-card-title" style="margin-bottom: 14px;"><img src="https://cdn.discordapp.com/emojis/1525317467893927987.webp" class="discord-emoji" alt="Theme"> Embed Theme Color</div>
+            <div class="form-group">
+              <label class="form-label" style="display: flex; align-items: center; justify-content: space-between;">
+                <span>Default Embed Accent</span>
+                <span class="nav-badge-pill" style="background: rgba(234, 179, 8, 0.2); color: #facc15; font-size: 9px; padding: 2px 6px; font-weight: 800;">GOLD+</span>
+              </label>
+              <input type="color" class="form-input" data-model="settings.embed_color" value="#df9b6d" style="height: 42px; cursor: pointer;">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Server Timezone</label>
+              <select class="form-select" data-model="settings.timezone">
+                <option value="UTC">UTC (Coordinated Universal Time)</option>
+                <option value="Asia/Karachi">UTC+5:00 (Islamabad, Karachi)</option>
+                <option value="America/New_York">UTC-5:00 (New York, Eastern)</option>
+                <option value="America/Los_Angeles">UTC-8:00 (Los Angeles, Pacific)</option>
+                <option value="Europe/London">UTC+0:00 (London, GMT)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= TAB 21: PREMIUM ================= -->
+      <div class="tab-content-panel" id="tab-premium">
+        <!-- Hero Header -->
+        <div class="premium-hero-card">
+          <div class="premium-hero-bg"></div>
+          <div class="premium-hero-content">
+            <div class="premium-hero-top">
+              <div class="premium-hero-tag">
+                <span class="premium-sparkle">✦</span>
+                <span>EXCLUSIVE TIER UPGRADES &amp; ENHANCEMENTS</span>
+              </div>
+              <div class="premium-hero-server-badge" id="premiumServerBadge">
+                <img src="assets/flarex_logo.png" class="discord-emoji small" alt="Server">
+                <span id="premiumServerNameText">Current Server</span>
+              </div>
+            </div>
+
+            <h1 class="premium-hero-title">
+              Elevate Your Community with <span class="gradient-text">Flarex Premium</span>
+            </h1>
+            <p class="premium-hero-desc">
+              Unlock maximum server limits, ultra-fast cooldowns, exclusive Obsidian &amp; Diamond badges, 24/7 dedicated voice sharding, custom server branding, automated backup &amp; restores, and high-priority gateway dispatch.
+            </p>
+
+            <!-- Live Subscription Status Widget -->
+            <div class="premium-status-banner" id="premiumStatusBanner">
+              <div class="premium-status-info">
+                <div class="premium-status-label-group">
+                  <span class="premium-status-indicator" id="premiumStatusIndicator"></span>
+                  <span class="premium-status-tier-title" id="premiumCurrentTierTitle">Free Plan</span>
+                  <span class="nav-badge-pill" id="premiumStatusBadge" style="background: rgba(184, 137, 99, 0.15); color: var(--accent-copper-light); border: 1px solid var(--accent-border);">STANDARD</span>
+                </div>
+                <div class="premium-status-details" id="premiumStatusDetails">
+                  No active premium subscription for this server. Start your 7-day free trial or upgrade to unlock elite perks.
+                </div>
+              </div>
+
+              <div class="premium-status-timer-box" id="premiumTimerBox" style="display: none;">
+                <div class="premium-timer-label">TIME REMAINING</div>
+                <div class="premium-timer-digits" id="premiumCountdownText">--d --h --m --s</div>
+                <div class="premium-timer-sub" id="premiumExpiryDateText">Expires on: --</div>
+              </div>
+
+              <div class="premium-hero-actions">
+                <button type="button" class="btn btn-premium-claim" id="claimTrialHeroBtn" style="padding: 10px 20px; font-weight: 700;">
+                  ⚡ Start 7-Day Free Trial
+                </button>
+                <a href="https://discord.gg/raunaq" target="_blank" rel="noopener noreferrer" class="btn btn-premium-buy" id="buyPremiumHeroBtn" style="padding: 10px 22px; font-weight: 700;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.894a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                  <span>Buy Premium</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unified 3-Tier Premium Plans Showcase -->
+        <div class="premium-section-header">
+          <div class="premium-section-title">
+            <span class="premium-section-icon">💎</span> Premium Plans &amp; Trial Experience
+          </div>
+          <div class="premium-section-sub">
+            Explore Gold (Trial Tier), Diamond (Tier 1), and Obsidian (Tier 2). Click the poster to view fullscreen in high resolution.
+          </div>
+        </div>
+
+        <div class="premium-posters-showcase" style="margin-bottom: 24px;">
+          <!-- Gold Poster Card -->
+          <div class="premium-poster-card gold-poster-card" id="openGoldPosterBtn" role="button" tabindex="0" aria-label="View Gold Edition Artwork">
+            <div class="premium-poster-img-container">
+              <img src="assets/gold_poster.png" alt="Flarex Gold Tier Artwork" class="premium-poster-img" loading="lazy">
+            </div>
+            <div style="padding: 14px 16px; background: var(--bg-card); display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-weight: 800; font-size: 14px; color: #facc15; display: flex; align-items: center; gap: 6px;">
+                  <span>🟡</span> Gold Edition (Trial)
+                </div>
+                <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">+5 Limit Boosts • Guild No-Prefix • 1.25x XP</div>
+              </div>
+              <span style="font-size: 11px; color: var(--accent-copper-light); font-weight: 600;">View 🔍</span>
+            </div>
+          </div>
+
+          <!-- Diamond Poster Card -->
+          <div class="premium-poster-card diamond-poster-card" id="openDiamondPosterBtn" role="button" tabindex="0" aria-label="View Diamond Edition Artwork">
+            <div class="premium-poster-img-container">
+              <img src="assets/diamond_poster.jpg" alt="Flarex Diamond Tier Artwork" class="premium-poster-img" loading="lazy">
+            </div>
+            <div style="padding: 14px 16px; background: var(--bg-card); display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-weight: 800; font-size: 14px; color: var(--accent-copper-light); display: flex; align-items: center; gap: 6px;">
+                  <span>💎</span> Diamond (Tier 1)
+                </div>
+                <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">+20 Limits • Priority Support • Backups</div>
+              </div>
+              <span style="font-size: 11px; color: var(--accent-copper-light); font-weight: 600;">View 🔍</span>
+            </div>
+          </div>
+
+          <!-- Obsidian Poster Card -->
+          <div class="premium-poster-card obsidian-poster-card" id="openObsidianPosterBtn" role="button" tabindex="0" aria-label="View Obsidian Edition Artwork">
+            <div class="premium-poster-img-container">
+              <img src="assets/obsidian_poster.jpg" alt="Flarex Obsidian Tier Artwork" class="premium-poster-img" loading="lazy">
+            </div>
+            <div style="padding: 14px 16px; background: var(--bg-card); display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-weight: 800; font-size: 14px; color: #e2d3c5; display: flex; align-items: center; gap: 6px;">
+                  <span>🖤</span> Obsidian (Tier 2)
+                </div>
+                <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">+50 Limits • Instant Cooldowns • Ghost Mode</div>
+              </div>
+              <span style="font-size: 11px; color: var(--accent-copper-light); font-weight: 600;">View 🔍</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="premium-unified-poster-showcase" style="margin-bottom: 30px;">
+          <div class="premium-poster-card unified-poster-card" id="openPremiumTiersPosterBtn" role="button" tabindex="0" aria-label="View Premium Plans Fullscreen">
+            <div class="premium-poster-img-container">
+              <img src="assets/premium_tiers_poster.jpg" alt="Flarex Premium Plans: Gold Trial, Diamond Tier 1, and Obsidian Tier 2" class="premium-poster-img" loading="lazy">
+            </div>
+          </div>
+        </div>
+
+        <!-- Comprehensive Feature Comparison Table -->
+        <div class="premium-section-header" style="margin-top: 40px;">
+          <div class="premium-section-title">
+            <span class="premium-section-icon">📊</span> Tier Capability Comparison Matrix
+          </div>
+          <div class="premium-section-sub">
+            Clear overview of limits and perks enabled across each plan tier.
+          </div>
+        </div>
+
+        <div class="config-card" style="padding: 0; overflow: hidden; margin-top: 14px; background: var(--bg-card); border: 1px solid var(--accent-border);">
+          <div style="overflow-x: auto;">
+            <table class="custom-table premium-comparison-table">
+              <thead>
+                <tr>
+                  <th style="min-width: 200px;">Feature / Perk</th>
+                  <th>Free Tier</th>
+                  <th>Gold Tier (Trial)</th>
+                  <th style="color: var(--accent-copper-light);">Diamond Tier (Tier 1)</th>
+                  <th style="color: var(--text-primary);">Obsidian Tier (Tier 2)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Limits Boost (Rules, Triggers, Tiers)</strong></td>
+                  <td>Base (Default)</td>
+                  <td><span class="nav-badge-pill" style="color: var(--accent-copper-light); background: rgba(184,137,99,0.12);">+5 Slots</span></td>
+                  <td><span class="nav-badge-pill" style="color: var(--accent-copper-light); background: rgba(184,137,99,0.2);">+20 Slots</span></td>
+                  <td><span class="nav-badge-pill" style="color: var(--text-primary); background: rgba(101,69,51,0.35);">+50 Slots</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Leveling XP Multiplier</strong></td>
+                  <td>1.0x (Standard)</td>
+                  <td>1.25x Boost</td>
+                  <td>1.50x Boost</td>
+                  <td><strong style="color: var(--accent-copper-light);">2.00x Double XP</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Command Cooldown Speed</strong></td>
+                  <td>Standard (1.0x)</td>
+                  <td>0.50x (2x Faster)</td>
+                  <td>0.25x (4x Faster)</td>
+                  <td><strong style="color: var(--status-online);">0.1x (Instant)</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>24/7 Voice Channel Music Stay</strong></td>
+                  <td>✕</td>
+                  <td><span class="perk-check">✓ Enabled</span></td>
+                  <td><span class="perk-check">✓ Enabled</span></td>
+                  <td><span class="perk-check">✓ Enabled</span></td>
+                </tr>
+                <tr>
+                  <td><strong>No-Prefix Commands in Channels</strong></td>
+                  <td>✕</td>
+                  <td><span class="perk-check">✓ Enabled</span></td>
+                  <td><span class="perk-check">✓ Enabled</span></td>
+                  <td><span class="perk-check">✓ Enabled</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Server Backup &amp; 1-Click Restore</strong></td>
+                  <td>✕</td>
+                  <td>✕</td>
+                  <td><span class="perk-check">✓ Full Backups</span></td>
+                  <td><span class="perk-check">✓ Unlimited Backups</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Custom Antinuke Whitelist Matrix</strong></td>
+                  <td>Standard</td>
+                  <td>Standard</td>
+                  <td><span class="perk-check">✓ Custom Triggers</span></td>
+                  <td><span class="perk-check">✓ Custom Triggers</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Custom Bot Avatar &amp; Nickname per Guild</strong></td>
+                  <td>✕</td>
+                  <td>✕</td>
+                  <td>✕</td>
+                  <td><span class="perk-check">✓ Fully Customizable</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Ghost Mode &amp; Stealth Mod Logs</strong></td>
+                  <td>✕</td>
+                  <td>✕</td>
+                  <td>✕</td>
+                  <td><span class="perk-check">✓ Enabled</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Priority Support &amp; Direct Shard Dispatch</strong></td>
+                  <td>Standard</td>
+                  <td>Standard</td>
+                  <td><span class="perk-check">✓ Priority</span></td>
+                  <td><span class="perk-check">✓ Dedicated VIP</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- FAQ & Support Section -->
+        <div class="config-grid-2col" style="margin-top: 24px;">
+          <div class="config-card">
+            <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317581282476102.webp" class="discord-emoji" alt="FAQ"> How to Upgrade or Purchase</div>
+            <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-top: 8px;">
+              Ready to upgrade your server to Diamond (Tier 1) or Obsidian (Tier 2)? Click the <strong>Buy Premium</strong> button or join our official Discord server at <a href="https://discord.gg/raunaq" target="_blank" rel="noopener noreferrer" style="color: var(--accent-copper-light); font-weight: 600; text-decoration: underline;">discord.gg/raunaq</a> and open a billing ticket. Our staff team will instantly activate your tier!
+            </div>
+          </div>
+
+          <div class="config-card">
+            <div class="config-card-title"><img src="https://cdn.discordapp.com/emojis/1525317467893927987.webp" class="discord-emoji" alt="Trial"> Free Trial Terms</div>
+            <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-top: 8px;">
+              Each server is eligible for a <strong>one-time 7-day free trial</strong> of the Gold Tier with no payment details required. When the trial expires, your server settings and configurations remain completely safe and gracefully switch back to standard limits.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- ================= RIGHT SIDEBAR ================= -->
+    <aside class="sidebar-right">
+      <!-- Bot Info Card -->
+      <div class="bot-info-card">
+        <div class="bot-info-header">
+          <div class="bot-info-crown">
+            <img src="assets/flarex_logo.png" class="discord-emoji" alt="Flarex Logo">
+          </div>
+          <div class="bot-info-title">Flarex™</div>
+        </div>
+        <div class="bot-info-subtitle">NEWGEN MODERATION BOT</div>
+        <div class="bot-info-desc">A powerful and easy to use moderation bot designed to keep your server safe, organized and active.</div>
+        
+        <div class="bot-info-divider">✦</div>
+
+        <div class="bot-info-table-header">
+          <div class="bot-info-table-title">Bot Info</div>
+          <button type="button" class="bot-edit-btn trigger-server-picker">Switch Server</button>
+        </div>
+
+        <div class="bot-details-list">
+          <div class="bot-detail-item">
+            <div class="bot-detail-label"><span class="icon"><img src="https://cdn.discordapp.com/emojis/1525317296598548623.webp" class="discord-emoji small" alt="User"></span> Name</div>
+            <div class="bot-detail-val">
+              <img src="assets/flarex_logo.png" class="discord-emoji" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 6px;" alt="Flarex Logo">Flarex
+            </div>
+          </div>
+          <div class="bot-detail-item">
+            <div class="bot-detail-label"><span class="icon">⇄</span> Prefix</div>
+            <div class="bot-detail-val">/</div>
+          </div>
+          <div class="bot-detail-item">
+            <div class="bot-detail-label"><span class="icon"><img src="https://cdn.discordapp.com/emojis/1525317317213290496.webp" class="discord-emoji small" alt="Version"></span> Version</div>
+            <div class="bot-detail-val">v2.8.4</div>
+          </div>
+          <div class="bot-detail-item">
+            <div class="bot-detail-label"><span class="icon"><img src="https://cdn.discordapp.com/emojis/1525316796289388765.webp" class="discord-emoji small" alt="Library"></span> Library</div>
+            <div class="bot-detail-val">Discord.py</div>
+          </div>
+          <div class="bot-detail-item">
+            <div class="bot-detail-label"><span class="icon"><img src="https://cdn.discordapp.com/emojis/1525317581282476102.webp" class="discord-emoji small" alt="Servers"></span> Servers</div>
+            <div class="bot-detail-val" id="sidebarServersVal">--</div>
+          </div>
+          <div class="bot-detail-item">
+            <div class="bot-detail-label"><span class="icon"><img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji small" alt="Uptime"></span> Uptime</div>
+            <div class="bot-detail-val" id="sidebarUptimeVal">--</div>
+          </div>
+          <div class="bot-detail-item" style="cursor: pointer;" id="sidebarTierRow">
+            <div class="bot-detail-label"><span class="icon"><img src="assets/crown.png" class="discord-emoji small" style="width: 15px; height: 15px; vertical-align: middle;" alt="Crown"></span> Plan Tier</div>
+            <div class="bot-detail-val" id="sidebarPlanVal" style="color: #facc15; font-weight: 700;">Free Plan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Server Stats Chart Card -->
+      <div class="server-stats-chart-card">
+        <div class="chart-header-row">
+          <div class="chart-title">
+            <span style="color: var(--accent-copper);"><img src="https://cdn.discordapp.com/emojis/1525317246543597648.webp" class="discord-emoji small" alt="Stats"></span> Server Stats
+          </div>
+          <select class="chart-dropdown-select">
+            <option>Last 7 days</option>
+            <option>Last 30 days</option>
+          </select>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="serverStatsCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- Bottom Card -->
+      <div class="thank-you-card">
+        <div class="thank-you-butterfly">🦋</div>
+        <div class="thank-you-text">Thank you for being here ♡</div>
+        <div class="thank-you-star">✦</div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- ================= FLOATING UNSAVED CHANGES BAR ================= -->
+  <div class="floating-save-bar" id="floatingSaveBar" role="region" aria-label="Unsaved Configuration Changes Bar">
+    <div class="floating-save-text">
+      <span style="color: var(--accent-copper); font-size: 16px;">✦</span>
+      <strong>Careful!</strong> You have unsaved configuration changes.
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button type="button" class="btn btn-secondary btn-sm" id="discardChangesBtn" aria-label="Discard unsaved changes">Discard</button>
+      <button type="button" class="btn btn-primary btn-sm" id="saveChangesBtn" aria-label="Save configuration changes">Save Changes</button>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 1: SERVER PICKER (GUILD SELECTOR) ================= -->
+  <div class="modal-backdrop" id="serverPickerModal" aria-modal="true" role="dialog" aria-label="Select Discord Server Modal">
+    <div class="modal-dialog large">
+      <div class="modal-header-bar">
+        <div class="modal-title-text">
+          <img src="https://cdn.discordapp.com/emojis/1525317581282476102.webp" class="discord-emoji" alt="Servers"> Select Discord Server
+        </div>
+        <button class="modal-close-btn" type="button" aria-label="Close Server Picker Modal">&times;</button>
+      </div>
+      <div style="padding: 16px 20px 0;">
+        <div style="display: flex; gap: 8px; margin-bottom: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary btn-sm server-filter-tab active" data-filter="all" aria-label="Show all servers">All Servers</button>
+            <button type="button" class="btn btn-secondary btn-sm server-filter-tab" data-filter="managed" aria-label="Show servers managed by bot">Managed by Flarex</button>
+            <button type="button" class="btn btn-secondary btn-sm server-filter-tab" data-filter="invite" aria-label="Show servers available to invite bot">Available to Add</button>
+          </div>
+          <button type="button" id="syncGuildsModalBtn" class="btn btn-secondary btn-sm" title="Synchronize latest servers and bot presence from Discord" style="font-size: 11.5px; padding: 6px 14px; gap: 6px;">
+            <img src="https://cdn.discordapp.com/emojis/1537085815002374255.webp" class="discord-emoji small" alt="Sync"> Sync Servers
+          </button>
+        </div>
+        <div class="server-picker-grid" id="serverPickerGrid">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 2: DISCORD AUTH LOGIN ================= -->
+  <div class="modal-backdrop" id="authLoginModal" aria-modal="true" role="dialog" aria-label="Discord Authentication Modal">
+    <div class="modal-dialog">
+      <div class="modal-header-bar">
+        <div class="modal-title-text">
+          <img src="https://cdn.discordapp.com/emojis/1525317296598548623.webp" class="discord-emoji" alt="Auth"> Discord Account & Server Sync
+        </div>
+        <button class="modal-close-btn" type="button" aria-label="Close Discord Auth Modal">&times;</button>
+      </div>
+      <div class="discord-auth-box">
+        <div class="discord-auth-logo">
+          <img src="assets/flarex_logo.png" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;" alt="Flarex Logo">
+        </div>
+        <div class="discord-auth-title" id="authBoxTitle">Sign in to Flarex</div>
+        <div class="discord-auth-desc" id="authBoxDesc">
+          Connect your real Discord account to locate your servers. Only servers where you hold <strong>Administrator</strong> or <strong>Server Owner</strong> permissions will be visible.
+        </div>
+        
+        <!-- Logged Out View -->
+        <div id="authLoggedOutView">
+
+          <div id="authErrorMsg" style="display: none; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #fca5a5; font-size: 11.5px; padding: 8px 12px; border-radius: 8px; margin-bottom: 12px; text-align: left;">
+          </div>
+
+          <button type="button" id="discordOAuthBtn" class="btn btn-blurple" style="width: 100%; padding: 13px; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px; box-shadow: 0 4px 15px rgba(88,101,242,0.35);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515a.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0a12.64 12.64 0 0 0-.617-1.25a.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057a19.9 19.9 0 0 0 5.993 3.03a.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106a13.107 13.107 0 0 1-1.872-.892a.077.077 0 0 1-.008-.128a10.2 10.2 0 0 0 .372-.292a.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127a12.299 12.299 0 0 1-1.873.894a.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028a19.839 19.839 0 0 0 6.002-3.03a.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419c0-1.333.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42c0 1.333-.946 2.418-2.157 2.418z"/></svg>
+            Authorize with Discord OAuth2
+          </button>
+
+          <div style="margin-top: 14px; padding: 10px 12px; background: rgba(223, 155, 109, 0.05); border: 1px solid var(--accent-border); border-radius: 8px; font-size: 11px; text-align: left;">
+            <div style="color: var(--text-secondary); margin-bottom: 4px; font-weight: 600;">OAuth2 Redirect URI:</div>
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+              <code id="currentRedirectUriText" style="color: var(--accent-copper); font-size: 10.5px; word-break: break-all;"></code>
+              <button type="button" class="btn btn-ghost" id="copyRedirectUriBtn" style="font-size: 10px; padding: 3px 6px; white-space: nowrap;">Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Logged In View -->
+        <div id="authLoggedInView" style="display: none;">
+          <div style="background: rgba(223, 155, 109, 0.08); border: 1px solid var(--accent-border); border-radius: 12px; padding: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 14px;">
+            <img src="" id="modalUserAvatar" class="user-avatar-img" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--accent-copper);" alt="User Avatar">
+            <div style="text-align: left; flex: 1; min-width: 0;">
+              <div id="modalUserGlobalName" style="font-size: 15px; font-weight: 700; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></div>
+              <div id="modalUserHandle" style="font-size: 12px; color: var(--text-secondary);"></div>
+              <div id="modalUserIdBadge" style="font-size: 10.5px; color: var(--text-muted); font-family: monospace; margin-top: 2px;"></div>
+            </div>
+            <div id="modalUserGuildsCount" class="nav-badge-pill" style="background: var(--accent-subtle); color: var(--accent-copper); font-weight: 600; white-space: nowrap;">
+              0 Servers
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <button type="button" class="btn btn-primary btn-sm trigger-server-picker" style="flex: 1; padding: 10px;">
+              <img src="https://cdn.discordapp.com/emojis/1525317581282476102.webp" class="discord-emoji small"> Locate & Switch Server
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" id="logoutBtn" style="color: #f87171; border-color: rgba(248,113,113,0.3); padding: 10px 16px;">
+              Sign Out
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 3: SEARCH DIALOG (CTRL + K) ================= -->
+  <div class="modal-backdrop" id="searchModal">
+    <div class="modal-dialog">
+      <div class="search-modal-input-wrap">
+        <span style="color: var(--accent-copper); font-size: 18px;">🔍</span>
+        <input type="text" id="searchModalInput" class="search-modal-input" placeholder="Type a command, module or setting name..." autofocus>
+        <span class="search-shortcut-badge">ESC to close</span>
+      </div>
+      <div class="search-results-list" id="searchResults">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 4: BOT HOST & CLOUDFLARE BRIDGE CONFIG ================= -->
+  <div class="modal-backdrop" id="hostSettingsModal">
+    <div class="modal-dialog">
+      <div class="modal-header-bar">
+        <div class="modal-title-text">
+          <span style="color: var(--accent-copper); font-size: 18px;">🌐</span> Bot Hosting & Cloudflare Bridge
+        </div>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="discord-auth-box">
+        <div class="discord-auth-logo" style="background: var(--accent-subtle); color: var(--accent-copper);">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4 1h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zm0 8h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1zm0 8h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1zM6 4h2v1H6V4zm0 8h2v1H6v-1zm0 8h2v1H6v-1z"/>
+          </svg>
+        </div>
+        <div class="discord-auth-title">Host Connection Settings</div>
+        <div class="discord-auth-desc">Connect this Cloudflare dashboard to your remote Discord bot backend instance running on VPS, Railway, Render, Docker, or Pterodactyl.</div>
+
+        <div class="form-group" style="text-align: left; margin-top: 14px;">
+          <label class="form-label" style="justify-content: space-between;">
+            <span>Bot REST API URL</span>
+            <span id="pingResultBadge" class="nav-badge-pill" style="background: rgba(74,222,128,0.12); color: #4ade80;">● Auto (/api)</span>
+          </label>
+          <input type="text" id="hostApiUrlInput" class="form-input" placeholder="e.g. https://api.yourdomain.com or /api" value="">
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+            Leave as <code>/api</code> when deployed on Cloudflare with the <code>BOT_API_URL</code> environment variable. The Cloudflare Edge proxy securely forwards API traffic.
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 16px;">
+          <button type="button" class="btn btn-secondary" id="testHostPingBtn" style="flex: 1; padding: 10px;">
+            ⚡ Test Ping & Latency
+          </button>
+          <button type="button" class="btn btn-primary" id="saveHostConfigBtn" style="flex: 1; padding: 10px;">
+            Save & Connect
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 6px; justify-content: center; margin-top: 14px;">
+          <button type="button" class="btn btn-ghost" id="presetCloudflareBtn" style="font-size: 11px; padding: 4px 8px;">Preset: Cloudflare Edge (/api)</button>
+          <button type="button" class="btn btn-ghost" id="presetLocalBtn" style="font-size: 11px; padding: 4px 8px;">Preset: Localhost (:8080)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 5: TICKET PANEL CREATOR / EDITOR ================= -->
+  <div class="modal-backdrop" id="ticketPanelModal">
+    <div class="modal-dialog">
+      <div class="modal-header-bar">
+        <div class="modal-title-text" id="ticketPanelModalTitle">
+          <img src="https://cdn.discordapp.com/emojis/1525317581282476102.webp" class="discord-emoji" alt="Ticket"> Add Ticket Panel
+        </div>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+      <div style="padding: 20px; text-align: left;">
+        <input type="hidden" id="ticketPanelIdInput" value="">
+        <div class="form-group">
+          <label class="form-label">Panel Category / Display Name</label>
+          <input type="text" id="ticketPanelNameInput" class="form-input" placeholder="e.g. Billing & Store Support, Bug Report, General Inquiry">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Assigned Support Staff Role</label>
+          <select id="ticketPanelRoleSelect" class="form-select" data-role-picker="true">
+            <option value="">-- Select Role --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Panel Emoji</label>
+          <input type="text" id="ticketPanelEmojiInput" class="form-input" placeholder="e.g. 🎫, 🛠️, 💳, 🚨" value="🎫">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Target Panel Channel (Where panel is posted)</label>
+          <select id="ticketPanelChannelSelect" class="form-select" data-channel-picker="text">
+            <option value="">-- Default / Current --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Open Ticket Category</label>
+          <select id="ticketPanelCategorySelect" class="form-select">
+            <option value="">-- Default Server Category --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+            <span style="font-size: 13px; color: var(--text-secondary);">Enable this ticket panel</span>
+            <label class="switch"><input type="checkbox" id="ticketPanelActiveCheckbox" checked><span class="slider"></span></label>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 18px;">
+          <button type="button" class="btn btn-secondary modal-close-btn" style="flex: 1; padding: 10px;">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveTicketPanelModalBtn" style="flex: 1; padding: 10px;">Save Panel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 6: LEVEL REWARD CREATOR ================= -->
+  <div class="modal-backdrop" id="levelRewardModal">
+    <div class="modal-dialog">
+      <div class="modal-header-bar">
+        <div class="modal-title-text" id="levelRewardModalTitle">
+          <img src="https://cdn.discordapp.com/emojis/1525317276105048155.webp" class="discord-emoji" alt="Roles"> Add Role Milestone
+        </div>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+      <div style="padding: 20px; text-align: left;">
+        <input type="hidden" id="levelRewardIndexInput" value="">
+        <div class="form-group">
+          <label class="form-label">Target Level Threshold</label>
+          <input type="number" id="levelRewardLevelInput" class="form-input" min="1" max="500" value="5" placeholder="e.g. 5, 10, 25, 50">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Role Reward to Grant</label>
+          <select id="levelRewardRoleSelect" class="form-select" data-role-picker="true">
+            <option value="">-- Select Role --</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 18px;">
+          <button type="button" class="btn btn-secondary modal-close-btn" style="flex: 1; padding: 10px;">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveLevelRewardModalBtn" style="flex: 1; padding: 10px;">Save Milestone</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 7: LAUNCH GIVEAWAY ================= -->
+  <div class="modal-backdrop" id="giveawayModal">
+    <div class="modal-dialog">
+      <div class="modal-header-bar">
+        <div class="modal-title-text">
+          <img src="https://cdn.discordapp.com/emojis/1525317427519553577.webp" class="discord-emoji" alt="Giveaways"> Launch Discord Giveaway
+        </div>
+        <button type="button" class="modal-close-btn">&times;</button>
+      </div>
+      <div style="padding: 20px; text-align: left;">
+        <div class="form-group">
+          <label class="form-label">Giveaway Prize</label>
+          <input type="text" id="giveawayPrizeInput" class="form-input" placeholder="e.g. 1 Month Discord Nitro, 50,000 Coins, VIP Role" value="Discord Nitro">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Duration</label>
+          <input type="text" id="giveawayDurationInput" class="form-input" placeholder="e.g. 1d, 12h, 30m" value="1d">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Number of Winners</label>
+          <input type="number" id="giveawayWinnersInput" class="form-input" min="1" max="20" value="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Channel (Where giveaway is posted)</label>
+          <select id="giveawayChannelSelect" class="form-select" data-channel-picker="text">
+            <option value="">-- Default / Current --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Required Role (Optional)</label>
+          <select id="giveawayRequiredRoleSelect" class="form-select" data-role-picker="true">
+            <option value="">-- None --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Minimum Level (Optional)</label>
+          <input type="number" id="giveawayMinLevelInput" class="form-input" min="0" max="100" value="0" placeholder="0 for no requirement">
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 18px;">
+          <button type="button" class="btn btn-secondary modal-close-btn" style="flex: 1; padding: 10px;">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveGiveawayModalBtn" style="flex: 1; padding: 10px;">🎉 Launch Giveaway</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 8: WARN TIER CREATOR / EDITOR ================= -->
+  <div class="modal-backdrop" id="warnTierModal" aria-modal="true" role="dialog" aria-labelledby="warnTierModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header-bar">
+        <div class="modal-title-text" id="warnTierModalTitle">
+          <img src="https://cdn.discordapp.com/emojis/1525317427519553577.webp" class="discord-emoji" alt="Warn"> Add Warning Escalation Tier
+        </div>
+        <button class="modal-close-btn" type="button" aria-label="Close Warning Tier Modal">&times;</button>
+      </div>
+      <div style="padding: 20px; text-align: left;">
+        <input type="hidden" id="warnTierIndexInput" value="">
+        <div class="form-group">
+          <label class="form-label" for="warnTierThresholdInput">Warning Threshold (Number of Warns)</label>
+          <input type="number" id="warnTierThresholdInput" class="form-input" min="1" max="50" value="3" placeholder="e.g. 1, 2, 3, 5" aria-label="Warning Threshold Number">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="warnTierActionSelect">Automated Escalation Action</label>
+          <select id="warnTierActionSelect" class="form-select" aria-label="Select Escalation Action">
+            <option value="timeout_5m">Timeout (5 Minutes)</option>
+            <option value="timeout_1h">Timeout (1 Hour)</option>
+            <option value="timeout_24h">Timeout (24 Hours)</option>
+            <option value="kick">Kick from Server</option>
+            <option value="ban">Ban User Permanently</option>
+            <option value="jail">Jail / Isolate User</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="warnTierDurationInput">Action Duration (Optional for Timeouts / Temp Bans)</label>
+          <input type="text" id="warnTierDurationInput" class="form-input" placeholder="e.g. 5m, 1h, 24h, 7d" value="5m" aria-label="Action Duration">
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 18px;">
+          <button type="button" class="btn btn-secondary modal-close-btn" style="flex: 1; padding: 10px;" aria-label="Cancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveWarnTierModalBtn" style="flex: 1; padding: 10px;" aria-label="Save Warning Tier">Save Tier</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 9: REACTION ROLE CREATOR / EDITOR ================= -->
+  <div class="modal-backdrop" id="reactionRoleModal" aria-modal="true" role="dialog" aria-labelledby="reactionRoleModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header-bar">
+        <div class="modal-title-text" id="reactionRoleModalTitle">
+          <img src="https://cdn.discordapp.com/emojis/1525317276105048155.webp" class="discord-emoji" alt="Roles"> Add Reaction Role Binding
+        </div>
+        <button class="modal-close-btn" type="button" aria-label="Close Reaction Role Modal">&times;</button>
+      </div>
+      <div style="padding: 20px; text-align: left;">
+        <input type="hidden" id="reactionRoleIndexInput" value="">
+        <div class="form-group">
+          <label class="form-label" for="reactionRoleChannelSelect">Target Discord Channel</label>
+          <select id="reactionRoleChannelSelect" class="form-select" data-channel-picker="text" aria-label="Target Discord Channel">
+            <option value="">-- Select Channel --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reactionRoleMessageIdInput">Discord Message ID</label>
+          <input type="text" id="reactionRoleMessageIdInput" class="form-input" placeholder="Paste Discord Message ID (Enable Developer Mode in Discord)" aria-label="Discord Message ID">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reactionRoleEmojiInput">Reaction Emoji</label>
+          <input type="text" id="reactionRoleEmojiInput" class="form-input" placeholder="e.g. ⭐, 👑, 🎮, 🔔" value="⭐" aria-label="Reaction Emoji">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reactionRoleRoleSelect">Role to Assign</label>
+          <select id="reactionRoleRoleSelect" class="form-select" data-role-picker="true" aria-label="Role to Assign">
+            <option value="">-- Select Role --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="reactionRoleModeSelect">Interaction Mode</label>
+          <select id="reactionRoleModeSelect" class="form-select" aria-label="Interaction Mode">
+            <option value="toggle">Toggle (Add on react, remove on unreact)</option>
+            <option value="give_only">Give Only (Only add role)</option>
+            <option value="take_only">Take Only (Only remove role)</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 18px;">
+          <button type="button" class="btn btn-secondary modal-close-btn" style="flex: 1; padding: 10px;" aria-label="Cancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveReactionRoleModalBtn" style="flex: 1; padding: 10px;" aria-label="Save Reaction Role">Save Binding</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 10: 7-DAY FREE TRIAL CONFIRMATION ================= -->
+  <div class="modal-backdrop" id="trialConfirmModal" aria-modal="true" role="dialog" aria-labelledby="trialConfirmModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header-bar">
+        <div class="modal-title-text" id="trialConfirmModalTitle">
+          <span style="color: #facc15; font-size: 18px;">⚡</span> Start 7-Day Gold Free Trial
+        </div>
+        <button class="modal-close-btn" type="button" aria-label="Close Trial Modal">&times;</button>
+      </div>
+      <div style="padding: 20px; text-align: left;">
+        <div style="display: flex; align-items: center; gap: 14px; background: rgba(234, 179, 8, 0.08); border: 1px solid rgba(234, 179, 8, 0.25); border-radius: 12px; padding: 14px; margin-bottom: 16px;">
+          <div style="font-size: 32px;">🪙</div>
+          <div>
+            <div style="font-weight: 700; color: #facc15; font-size: 14px;" id="trialModalGuildName">Your Server</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">Activate 7 full days of Flarex Gold tier perks with zero upfront payment.</div>
+          </div>
+        </div>
+
+        <div style="font-size: 12.5px; color: var(--text-primary); margin-bottom: 12px; font-weight: 600;">What you get for 7 days:</div>
+        <ul style="font-size: 12px; color: var(--text-secondary); line-height: 1.8; margin-left: 18px; margin-bottom: 18px;">
+          <li>+5 Boost to all automod filters, role limits, and warning escalation ladders</li>
+          <li>1.25x XP multiplier across all text and voice leveling channels</li>
+          <li>0.50x Command Cooldown reduction for snappy moderation</li>
+          <li>24/7 Voice Channel Music Engine uptime</li>
+          <li>No-prefix command access in designated server channels</li>
+        </ul>
+
+        <div style="display: flex; gap: 10px;">
+          <button type="button" class="btn btn-secondary modal-close-btn" style="flex: 1; padding: 10px;" aria-label="Cancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="confirmStartTrialBtn" style="flex: 1; padding: 10px; font-weight: 700; background: linear-gradient(135deg, #eab308, #ca8a04); border-color: #facc15; color: #000;" aria-label="Confirm Start Trial">
+            Confirm &amp; Activate
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 11: POSTER LIGHTBOX ================= -->
+  <div class="modal-backdrop poster-lightbox-backdrop" id="posterLightboxModal" aria-modal="true" role="dialog" aria-label="Artwork Preview">
+    <div class="poster-lightbox-container">
+      <button class="poster-lightbox-close modal-close-btn" type="button" aria-label="Close Lightbox">&times;</button>
+      <div class="poster-lightbox-body">
+        <img src="" id="lightboxPosterImg" alt="Flarex Artwork Fullscreen" class="lightbox-img">
+        <div class="poster-lightbox-caption" id="lightboxPosterCaption"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 12: ADD / EDIT WHITELIST ================= -->
+  <div class="modal-backdrop" id="whitelistModal" aria-modal="true" role="dialog" aria-labelledby="whitelistModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header-bar">
+        <div class="modal-title-text" id="whitelistModalTitle">
+          <img src="assets/crown.png" class="discord-emoji" alt="Whitelist"> Add Whitelisted User or Bot
+        </div>
+        <button class="modal-close-btn" type="button" aria-label="Close Whitelist Modal">&times;</button>
+      </div>
+      <div class="modal-body-form" style="padding: 20px;">
+        <input type="hidden" id="whitelistEditIndex" value="-1">
+        <div class="form-group">
+          <label class="form-label" for="whitelistNameInput">User / Role / Bot Name</label>
+          <input type="text" id="whitelistNameInput" class="form-input" placeholder="e.g. Flarex Manager / Antinuke Trusted" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="whitelistIdInput">Discord ID (User ID or Role ID)</label>
+          <input type="text" id="whitelistIdInput" class="form-input" placeholder="e.g. 1525310645031931904" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="whitelistDesignationSelect">Designation</label>
+          <select id="whitelistDesignationSelect" class="form-select">
+            <option value="owner">👑 Server Owner</option>
+            <option value="lead_dev" selected>🛡️ Lead Dev / Manager</option>
+            <option value="admin">⭐ Administrator</option>
+            <option value="bot">🤖 Verified Bot</option>
+            <option value="mod">🔨 Moderator</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="whitelistScopeSelect">Bypass Scope</label>
+          <select id="whitelistScopeSelect" class="form-select">
+            <option value="full_immunity" selected>Full Immunity (Bypass All Triggers)</option>
+            <option value="channel_role">Channel &amp; Role Actions Only</option>
+            <option value="bot_operations">Bot Operations Only</option>
+            <option value="anti_spam">Anti-Spam &amp; Anti-Raid Bypass Only</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer-btns" style="display: flex; gap: 10px; padding: 0 20px 20px 20px;">
+        <button type="button" class="btn btn-secondary modal-close-btn" style="flex: 1; padding: 10px;">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveWhitelistModalBtn" style="flex: 1; padding: 10px;">Save Whitelist</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 13: ASSIGN AUTOROLE ================= -->
+  <div class="modal-backdrop" id="assignRoleModal" aria-modal="true" role="dialog" aria-labelledby="assignRoleModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header-bar">
+        <div class="modal-title-text" id="assignRoleModalTitle">
+          <img src="https://cdn.discordapp.com/emojis/1525317286867501070.webp" class="discord-emoji" alt="Autoroles"> Assign Auto-Role on Join
+        </div>
+        <button class="modal-close-btn" type="button" aria-label="Close Assign Role Modal">&times;</button>
+      </div>
+      <div class="modal-body-form" style="padding: 20px;">
+        <div class="form-group">
+          <label class="form-label" for="assignRoleSelect">Select Discord Server Role</label>
+          <select id="assignRoleSelect" class="form-select" data-role-picker="true">
+            <option value="">-- Select Role --</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer-btns" style="display: flex; gap: 10px; padding: 0 20px 20px 20px;">
+        <button type="button" class="btn btn-secondary modal-close-btn" style="flex: 1; padding: 10px;">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveAssignRoleModalBtn" style="flex: 1; padding: 10px;">+ Add Role</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL 14: ADD BANNED WORD ================= -->
+  <div class="modal-backdrop" id="addBannedWordModal" aria-modal="true" role="dialog" aria-labelledby="addBannedWordModalTitle">
+    <div class="modal-dialog">
+      <div class="modal-header-bar">
+        <div class="modal-title-text" id="addBannedWordModalTitle">
+          <img src="https://cdn.discordapp.com/emojis/1525317475917631629.webp" class="discord-emoji" alt="Word Blacklist"> Add Blacklisted Word or Slur
+        </div>
+        <button class="modal-close-btn" type="button" aria-label="Close Add Word Modal">&times;</button>
+      </div>
+      <div class="modal-body-form" style="padding: 20px;">
+        <div class="form-group">
+          <label class="form-label" for="newBannedWordInput">Word / Phrase to Blacklist</label>
+          <input type="text" id="newBannedWordInput" class="form-input" placeholder="e.g. scam, free-nitro, phish-link (comma-separated for multiple)" required>
+          <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 6px;">
+            Messages containing these terms will be automatically intercepted and deleted by Flarex AutoMod. You can enter multiple words separated by commas.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer-btns" style="display: flex; gap: 10px; padding: 0 20px 20px 20px;">
+        <button type="button" class="btn btn-secondary modal-close-btn" style="flex: 1; padding: 10px;">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveBannedWordModalBtn" style="flex: 1; padding: 10px;">+ Add Word</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TOAST CONTAINER ================= -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script src="js/app.js" data-cfasync="false"></script>
+</body>
+</html>

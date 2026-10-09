@@ -1,0 +1,21 @@
+{
+  "name": "flarex-dashboard",
+  "version": "2.8.4",
+  "description": "Flarex™ Discord Bot Dashboard - Cloudflare Pages Edition",
+  "main": "index.html",
+  "scripts": {
+    "dev": "wrangler pages dev .",
+    "deploy": "wrangler pages deploy .",
+    "start": "node server.js",
+    "build": "echo 'Flarex Cloudflare Build Complete'"
+  },
+  "keywords": [
+    "discord-bot",
+    "dashboard",
+    "cloudflare",
+    "cloudflare-pages",
+    "cloudflare-workers"
+  ],
+  "author": "Flarex Development",
+  "license": "MIT"
+}
