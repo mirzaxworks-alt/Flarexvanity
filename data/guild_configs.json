@@ -1,0 +1,131 @@
+{
+  "123456789": {
+    "settings": {
+      "prefix": "?",
+      "embed_color": "#ffaa00",
+      "nickname": "Flarex Sentinel",
+      "timezone": "America/New_York"
+    },
+    "cases": {
+      "modlog_channel_id": "555111222",
+      "command_channel_id": "555333444",
+      "require_reason": true,
+      "dm_user_on_action": true
+    },
+    "premium": {
+      "subscription": "golden_guild_premium",
+      "subscription_end": "2026-10-16T02:15:37.811939+00:00",
+      "trial_used": true,
+      "trial_claimed_at": "2026-10-09T02:15:37.811939+00:00",
+      "trial_user_id": 1001,
+      "source": "free_trial"
+    },
+    "antinuke": {
+      "enabled": true,
+      "punishment": "kick",
+      "channel_del_limit": 3,
+      "whitelist": [
+        "5555",
+        "6666"
+      ]
+    },
+    "command_access": {
+      "disabled_commands": [
+        "ban",
+        "kick"
+      ],
+      "admin_bypass": true
+    },
+    "jail": {
+      "clear_roles": true,
+      "default_duration": "6h"
+    },
+    "leveling": {
+      "multiplier": 4.0,
+      "target": "dm",
+      "enabled": true
+    },
+    "warn_config": {
+      "decay_days": 14,
+      "default_reason": "Rule violation default",
+      "tiers": [
+        {
+          "warns": 3,
+          "action": "mute",
+          "duration": "1h"
+        }
+      ]
+    },
+    "starboard": {
+      "enabled": false,
+      "threshold": 4,
+      "emoji": "\u2b50",
+      "self_star": true,
+      "channel_id": "44556677"
+    },
+    "tickets": {
+      "enabled": true,
+      "transcript_channel_id": "77889900",
+      "panels": [
+        {
+          "id": 1,
+          "name": "General Support",
+          "emoji": "\ud83c\udfab",
+          "label": "Create Ticket",
+          "transcript_channel_id": "77889900"
+        }
+      ]
+    },
+    "welcomer": {
+      "enabled": true,
+      "dm_enabled": true,
+      "welcome_dm_message": "Welcome to our community, {user}!",
+      "title": "Welcome!",
+      "description": "Glad to have you here!"
+    },
+    "economy": {
+      "currency_symbol": "\ud83d\udc8e",
+      "currency_name": "Diamonds",
+      "starting_balance": 5000,
+      "daily_amount": 1200,
+      "work_range": "300 - 800",
+      "rob_success_rate": 60,
+      "shield_duration": "48 Hours"
+    },
+    "music": {
+      "default_volume": 85,
+      "stay_247": true,
+      "idle_timeout": 240,
+      "equalizer": "nightcore",
+      "dj_role": "9988776655"
+    },
+    "reaction_roles": {
+      "enabled": true,
+      "entries": [
+        {
+          "channel_id": "111222333",
+          "message_id": "444555666",
+          "emoji": "\ud83c\udf89",
+          "role_id": "777888999"
+        }
+      ]
+    }
+  },
+  "987654321": {
+    "premium": {
+      "subscription": "golden_guild_premium",
+      "subscription_end": "2026-10-09T01:15:40.304585+00:00",
+      "trial_used": true
+    }
+  },
+  "1556629418422702110": {
+    "premium": {
+      "subscription": "golden_guild_premium",
+      "subscription_end": "2026-10-16T03:33:40.547000+00:00",
+      "trial_used": true,
+      "trial_claimed_at": "2026-10-09T03:33:40.547000+00:00",
+      "trial_user_id": 1476992993327054920,
+      "source": "free_trial"
+    }
+  }
+}
